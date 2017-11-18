@@ -38,11 +38,10 @@
 + (BOOL)isValidFloatingSmcType:(NSString *)type
 {
     if (type && [type length] >= 3) {
-	    
-	   if ([type characterAtIndex:0] == 'f' && [type characterAtIndex:1] == 'l'&& [type characterAtIndex:2] == 't' )
-            return TRUE;   
-	    
-	    
+
+        if ([type characterAtIndex:0] == 'f' && [type characterAtIndex:1] == 'l'&& [type characterAtIndex:2] == 't')
+            return TRUE;
+
         if (([type characterAtIndex:0] == 'f' || [type characterAtIndex:0] == 's') && [type characterAtIndex:1] == 'p') {
             UInt8 i = [SmcHelper getIndexFromHexChar:[type characterAtIndex:2]];
             UInt8 f = [SmcHelper getIndexFromHexChar:[type characterAtIndex:3]];
@@ -129,38 +128,35 @@
 
                 if (i + f != (type[0] == 's' ? 15 : 16) )
                     return nil;
-                
+
                 UInt16 swapped = OSSwapBigToHostInt16(encoded);
-                
+
                 BOOL signd = type[0] == 's';
                 BOOL minus = bit_get(swapped, BIT(15));
-                
+
                 if (signd && minus) bit_clear(swapped, BIT(15));
-                
+
                 return [NSNumber numberWithFloat:((float)swapped / (float)BIT(f)) * (signd && minus ? -1 : 1)];
-            }else if (type[0] == 'f' && type[1] == 'l' && type[2] == 't' && length == 4){
-                
+            }
+			else if (type[0] == 'f' && type[1] == 'l' && type[2] == 't' && length == 4) {
                 float encoded = 0;
-                
+
                 bcopy(data, &encoded, 4);
-                
-    
-                    
-                    
-                    return [NSNumber numberWithFloat:(encoded )];
+
+                return [NSNumber numberWithFloat:(encoded )];
             }
         }
     }
-    
+
     return nil;
 }
 
 + (BOOL)encodeNumericValue:(NSNumber*)value length:(NSUInteger)length type:(const char *)type outBuffer:(void*)outBuffer
 {
     if (type && outBuffer) {
-        
+
         size_t typeLength = strnlen(type, 4);
-        
+
         if (typeLength >= 3) {
             if ((type[0] == 'u' || type[0] == 's') && type[1] == 'i') {
 
@@ -168,9 +164,9 @@
 
                 bool minus = intValue < 0;
                 bool signd = type[0] == 's';
-                
+
                 if (minus) intValue = -intValue;
-                
+
                 switch (type[2]) {
                     case '8':
                         if (type[3] == '\0' && length == 1) {
@@ -180,7 +176,7 @@
                             return TRUE;
                         }
                         break;
-                        
+
                     case '1':
                         if (type[3] == '6' && length == 2) {
                             UInt16 encoded = (UInt16)intValue;
@@ -189,7 +185,7 @@
                             return TRUE;
                         }
                         break;
-                        
+
                     case '3':
                         if (type[3] == '2' && length == 4) {
                             UInt32 encoded = (UInt32)intValue;
@@ -206,7 +202,7 @@
                 bool signd = type[0] == 's';
                 UInt8 i = [SmcHelper getIndexFromHexChar:type[2]];
                 UInt8 f = [SmcHelper getIndexFromHexChar:type[3]];
-                
+
                 if (i + f == (signd ? 15 : 16)) {
                     if (minus) floatValue = -floatValue;
                     UInt16 encoded = floatValue * (float)BIT(f);
@@ -217,7 +213,7 @@
             }
         }
     }
-    
+
     return FALSE;
 }
 
