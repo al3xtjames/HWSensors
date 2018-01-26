@@ -15,17 +15,17 @@
  #define fVendor "vendor-id"
  #define fDevice "device-id"
  #define kIOPCIConfigBaseAddress0 0x10*/
-#define kMCHBAR	0x48
-#define TSC1	0x1001
-#define TSS1	0x1004
-#define TR1		0x1006
-#define RTR1	0x1008
-#define TIC1	0x100B
-#define TSC2	0x1041
-#define TSS2	0x1044
-#define TR2		0x1046
-#define RTR2	0x1048
-#define TIC2	0x104B
+#define kMCHBAR 0x48
+#define TSC1    0x1001
+#define TSS1    0x1004
+#define TR1     0x1006
+#define RTR1    0x1008
+#define TIC1    0x100B
+#define TSC2    0x1041
+#define TSS2    0x1044
+#define TR2     0x1046
+#define RTR2    0x1048
+#define TIC2    0x104B
 
 
 #define INVID8(offset) (mmio_base[offset])
@@ -45,17 +45,17 @@ bool GmaSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
             
             OUTVID(TIC1, 3);
             
-            //		if ((INVID16(TSC1) & (1<<15)) && !(INVID16(TSC1) & (1<<8)))//enabled and ready
+            //      if ((INVID16(TSC1) & (1<<15)) && !(INVID16(TSC1) & (1<<8)))//enabled and ready
             for (int i=0; i<1000; i++) {  //attempts to ready
                 
                 if (INVID16(TSS1) & (1<<10))   //valid?
                     break;
                 
                 IOSleep(10);
-            }	
-			
+            }   
+            
             value = INVID8(TR1);
-        }				
+        }               
         
         *outValue = (float)(150 - value);
     }
@@ -65,27 +65,27 @@ bool GmaSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
 
 bool GmaSensors::managedStart(IOService *provider)
 {
-	IOPhysicalAddress bar = (IOPhysicalAddress)((pciDevice->configRead32(kMCHBAR)) & ~0xf);
+    IOPhysicalAddress bar = (IOPhysicalAddress)((pciDevice->configRead32(kMCHBAR)) & ~0xf);
     
-	HWSensorsDebugLog("Fx3100: register space=%08lx", (long unsigned int)bar);
-	
-	if(IOMemoryDescriptor * theDescriptor = IOMemoryDescriptor::withPhysicalAddress (bar, 0x2000, kIODirectionOutIn)) {
-		if ((mmio = theDescriptor->map())) {
+    HWSensorsDebugLog("Fx3100: register space=%08lx", (long unsigned int)bar);
+    
+    if(IOMemoryDescriptor * theDescriptor = IOMemoryDescriptor::withPhysicalAddress (bar, 0x2000, kIODirectionOutIn)) {
+        if ((mmio = theDescriptor->map())) {
             
-			mmio_base = (volatile UInt8 *)mmio->getVirtualAddress();
+            mmio_base = (volatile UInt8 *)mmio->getVirtualAddress();
 
-			/*HWSensorsDebugLog("MCHBAR mapped");
+            /*HWSensorsDebugLog("MCHBAR mapped");
             
-			for (int i = 0; i < 0x2f; i += 16) {
-				HWSensorsDebugLog("%04lx: ", (long unsigned int)i+0x1000);
-				for (int j=0; j<16; j += 1) {
-					HWSensorsDebugLog("%02lx ", (long unsigned int)INVID8(i+j+0x1000));
-				}
+            for (int i = 0; i < 0x2f; i += 16) {
+                HWSensorsDebugLog("%04lx: ", (long unsigned int)i+0x1000);
+                for (int j=0; j<16; j += 1) {
+                    HWSensorsDebugLog("%02lx ", (long unsigned int)INVID8(i+j+0x1000));
+                }
             HWSensorsDebugLog("");
-			}*/
-	
-		}
-		else {
+            }*/
+    
+        }
+        else {
             HWSensorsInfoLog("MCHBAR failed to map");
             return false;
         }
@@ -112,7 +112,7 @@ bool GmaSensors::managedStart(IOService *provider)
     
     registerService();
     
-	return true;
+    return true;
 }
 
 void GmaSensors::stop(IOService* provider)

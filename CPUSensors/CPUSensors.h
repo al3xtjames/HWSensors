@@ -136,8 +136,8 @@ protected:
     virtual bool            willReadSensorValue(FakeSMCSensor *sensor, float *outValue);
     
 public:
-    virtual bool			start(IOService *provider);
+    virtual bool            start(IOService *provider);
     virtual IOReturn        setPowerState(unsigned long powerState, IOService *device);
     virtual void            stop(IOService* provider);
-    virtual void			free(void);
+    virtual void            free(void);
 };

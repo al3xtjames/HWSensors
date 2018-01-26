@@ -65,7 +65,7 @@ class ACPIProbe : public FakeSMCPlugin
     OSDeclareDefaultStructors(ACPIProbe)
     
 private:
-	IOACPIPlatformDevice    *acpiDevice;
+    IOACPIPlatformDevice    *acpiDevice;
     IOWorkLoop              *workloop;
     IOTimerEventSource      *timerEventSource;
     
@@ -88,7 +88,7 @@ protected:
     
     
 public:
-    virtual bool			start(IOService *provider);
+    virtual bool            start(IOService *provider);
     virtual IOReturn        setPowerState(unsigned long powerState, IOService *device);
     virtual void            stop(IOService* provider);
     virtual void            free();

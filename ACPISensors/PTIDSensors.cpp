@@ -187,12 +187,12 @@ void PTIDSensors::parseTachometerName(OSString *name, OSString *title, UInt32 in
 
 bool PTIDSensors::start(IOService * provider)
 {
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
     
-	acpiDevice = (IOACPIPlatformDevice *)provider;
-	
-	if (!acpiDevice) {
+    acpiDevice = (IOACPIPlatformDevice *)provider;
+    
+    if (!acpiDevice) {
         HWSensorsFatalLog("ACPI device not ready");
         return false;
     }
@@ -286,7 +286,7 @@ bool PTIDSensors::start(IOService * provider)
     
     HWSensorsInfoLog("started");
     
-	return true;
+    return true;
 }
 
 void PTIDSensors::free()

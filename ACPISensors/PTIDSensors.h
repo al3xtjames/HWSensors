@@ -36,7 +36,7 @@ class PTIDSensors : public FakeSMCPlugin
     OSDeclareDefaultStructors(PTIDSensors)
     
 private:
-	IOACPIPlatformDevice    *acpiDevice;
+    IOACPIPlatformDevice    *acpiDevice;
     UInt64                  version;
     
     OSArray                 *temperatures;
@@ -58,7 +58,7 @@ protected:
     virtual bool           willReadSensorValue(FakeSMCSensor *sensor, float *outValue);
     
 public:
-    virtual bool			start(IOService *provider);
+    virtual bool            start(IOService *provider);
     virtual void            free();
 };
 

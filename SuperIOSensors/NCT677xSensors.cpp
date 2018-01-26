@@ -66,7 +66,7 @@ UInt8 NCT677xSensors::readByte(UInt16 reg)
 
 void NCT677xSensors::writeByte(UInt16 reg, UInt8 value)
 {
-	UInt8 bank = reg >> 8;
+    UInt8 bank = reg >> 8;
     UInt8 regi = reg & 0xFF;
     
     outb((UInt16)(address + NUVOTON_ADDRESS_REGISTER_OFFSET), NUVOTON_BANK_SELECT_REGISTER);
@@ -118,7 +118,7 @@ float NCT677xSensors::readTemperature(UInt32 index)
     }
     
     
-	return 0;
+    return 0;
 }
 
 float NCT677xSensors::readVoltage(UInt32 index)
@@ -209,7 +209,7 @@ void NCT677xSensors::writeTachometerControl(UInt32 index, UInt8 percent)
         
         writeByte(NUVOTON_NCT6775_REG_PWM[index], value);
 
-        if (index == 2)	{ /* floor: disable if val == 0 */
+        if (index == 2) { /* floor: disable if val == 0 */
             UInt8 reg = readByte(NUVOTON_NCT6775_REG_TEMP_SEL[index]);
             reg &= 0x7f;
             if (value)
@@ -284,7 +284,7 @@ bool NCT677xSensors::initialize()
             break;
     }
 
-	return true;
+    return true;
 }
 
 void NCT677xSensors::hasPoweredOn()

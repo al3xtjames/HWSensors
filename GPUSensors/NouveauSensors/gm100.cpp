@@ -43,7 +43,7 @@
 
 bool gm100_identify(struct nouveau_device *device)
 {
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0x117:
             device->cname = "GM107";
             break;
@@ -67,9 +67,9 @@ bool gm100_identify(struct nouveau_device *device)
         default:
             nv_fatal(device, "unknown Maxwell chipset 0x%x\n", device->chipset);
             return false;
-	}
+    }
 
-	return true;
+    return true;
 }
 
 static int gm107_fan_pwm_get(struct nouveau_device *device, int line, u32 *divs, u32 *duty)

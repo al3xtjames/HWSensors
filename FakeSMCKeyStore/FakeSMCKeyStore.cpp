@@ -67,8 +67,8 @@ void FakeSMCKeyStore::updateKeyCounterKey()
 {
     lockAccess();
     
-	UInt32 count = OSSwapHostToBigInt32(keys->getCount());
-	keyCounterKey->setValueFromBuffer(&count, 4);
+    UInt32 count = OSSwapHostToBigInt32(keys->getCount());
+    keyCounterKey->setValueFromBuffer(&count, 4);
     
     unlockAccess();
 }
@@ -77,7 +77,7 @@ void FakeSMCKeyStore::updateFanCounterKey()
 {
     lockAccess();
     
-	UInt8 count = 0;
+    UInt8 count = 0;
 
     for (UInt8 i = 0; i <= 0xf; i++) {
         if (bit_get(vacantFanIndex, BIT(i)) != 0) {
@@ -85,7 +85,7 @@ void FakeSMCKeyStore::updateFanCounterKey()
         }
     }
 
-	fanCounterKey->setValueFromBuffer(&count, 1);
+    fanCounterKey->setValueFromBuffer(&count, 1);
     
     unlockAccess();
 }
@@ -152,33 +152,33 @@ FakeSMCKey *FakeSMCKeyStore::addKeyWithValue(const char *name, const char *type,
             }
         }
 
-		HWSensorsDebugLog("value updated for key %s, type: %s, size: %d", key->getKey(), key->getType(), key->getSize());
+        HWSensorsDebugLog("value updated for key %s, type: %s, size: %d", key->getKey(), key->getType(), key->getSize());
 
-		return key;
-	}
+        return key;
+    }
 
-	HWSensorsDebugLog("adding key %s with value, type: %s, size: %d", name, type, size);
+    HWSensorsDebugLog("adding key %s with value, type: %s, size: %d", name, type, size);
 
     OSString *wellKnownType = 0;
 
     if (!type) wellKnownType = OSDynamicCast(OSString, types->getObject(name));
 
-	if (FakeSMCKey *key = FakeSMCKey::withValue(name, type ? type : wellKnownType ? wellKnownType->getCStringNoCopy() : 0, size, value)) {
+    if (FakeSMCKey *key = FakeSMCKey::withValue(name, type ? type : wellKnownType ? wellKnownType->getCStringNoCopy() : 0, size, value)) {
         lockAccess();
-		keys->setObject(key);
-		updateKeyCounterKey();
+        keys->setObject(key);
+        updateKeyCounterKey();
         unlockAccess();
-		return key;
-	}
+        return key;
+    }
 
-	HWSensorsErrorLog("failed to create key %s", name);
+    HWSensorsErrorLog("failed to create key %s", name);
 
-	return 0;
+    return 0;
 }
 
 FakeSMCKey *FakeSMCKeyStore::addKeyWithHandler(const char *name, const char *type, unsigned char size, FakeSMCKeyHandler *handler)
 {
-	if (FakeSMCKey *key = getKey(name)) {
+    if (FakeSMCKey *key = getKey(name)) {
 
         FakeSMCKeyHandler *existedHandler = key->getHandler();
 
@@ -194,22 +194,22 @@ FakeSMCKey *FakeSMCKeyStore::addKeyWithHandler(const char *name, const char *typ
         key->setSize(size);
         key->setHandler(handler);
 
-		return key;
-	}
+        return key;
+    }
 
-	HWSensorsDebugLog("adding key %s with handler, type: %s, size: %d", name, type, size);
+    HWSensorsDebugLog("adding key %s with handler, type: %s, size: %d", name, type, size);
 
-	if (FakeSMCKey *key = FakeSMCKey::withHandler(name, type, size, handler)) {
+    if (FakeSMCKey *key = FakeSMCKey::withHandler(name, type, size, handler)) {
         lockAccess();
-		keys->setObject(key);
+        keys->setObject(key);
         updateKeyCounterKey();
         unlockAccess();
-		return key;
-	}
+        return key;
+    }
 
-	HWSensorsErrorLog("failed to create key %s", name);
+    HWSensorsErrorLog("failed to create key %s", name);
 
-	return 0;
+    return 0;
 }
 
 FakeSMCKey *FakeSMCKeyStore::getKey(const char *name)
@@ -223,24 +223,24 @@ FakeSMCKey *FakeSMCKeyStore::getKey(const char *name)
         char validKeyNameBuffer[5];
         copySymbol(name, validKeyNameBuffer);
 
-		while (FakeSMCKey *key = OSDynamicCast(FakeSMCKey, iterator->getNextObject())) {
+        while (FakeSMCKey *key = OSDynamicCast(FakeSMCKey, iterator->getNextObject())) {
             UInt32 key1 = HWSensorsKeyToInt(&validKeyNameBuffer);
-			UInt32 key2 = HWSensorsKeyToInt(key->getKey());
-			if (key1 == key2) {
-				OSSafeReleaseNULL(iterator);
+            UInt32 key2 = HWSensorsKeyToInt(key->getKey());
+            if (key1 == key2) {
+                OSSafeReleaseNULL(iterator);
                 OSSafeReleaseNULL(snapshotKeys);
-				return key;
-			}
-		}
+                return key;
+            }
+        }
 
         OSSafeReleaseNULL(iterator);
-	}
+    }
 
     OSSafeReleaseNULL(snapshotKeys);
 
- 	HWSensorsDebugLog("key %s not found", name);
+    HWSensorsDebugLog("key %s not found", name);
 
-	return 0;
+    return 0;
 }
 
 FakeSMCKey *FakeSMCKeyStore::getKey(unsigned int index)
@@ -249,9 +249,9 @@ FakeSMCKey *FakeSMCKeyStore::getKey(unsigned int index)
     FakeSMCKey *key = OSDynamicCast(FakeSMCKey, keys->getObject(index));
     unlockAccess();
 
-	if (!key) HWSensorsDebugLog("key with index %d not found", index);
+    if (!key) HWSensorsDebugLog("key with index %d not found", index);
 
-	return key;
+    return key;
 }
 
 OSArray *FakeSMCKeyStore::getKeys()
@@ -478,7 +478,7 @@ bool FakeSMCKeyStore::initAndStart(IOService *provider, OSDictionary *properties
 {
     //HWSensorsDebugLog("init()");
     if (!provider || !init())
-		return false;
+        return false;
 
     //HWSensorsDebugLog("attach()");
     attach(provider);
@@ -495,12 +495,12 @@ bool FakeSMCKeyStore::initAndStart(IOService *provider, OSDictionary *properties
 
 bool FakeSMCKeyStore::init(OSDictionary *properties)
 {
-	if (!super::init(properties))
-		return false;
+    if (!super::init(properties))
+        return false;
 
     accessLock = IORecursiveLockAlloc();
     
-	keys = OSArray::withCapacity(2);
+    keys = OSArray::withCapacity(2);
     types = OSDictionary::withCapacity(0);
 
     keyCounterKey = FakeSMCKey::withValue(KEY_COUNTER, SMC_TYPE_UI32, SMC_TYPE_UI32_SIZE, "\0\0\0\1");
@@ -508,12 +508,12 @@ bool FakeSMCKeyStore::init(OSDictionary *properties)
     fanCounterKey = FakeSMCKey::withValue(KEY_FAN_NUMBER, SMC_TYPE_UI8, SMC_TYPE_UI8_SIZE, "\0");
     keys->setObject(fanCounterKey);
 
-	return true;
+    return true;
 }
 
 bool FakeSMCKeyStore::start(IOService *provider)
 {
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
 
 
@@ -558,7 +558,7 @@ bool FakeSMCKeyStore::start(IOService *provider)
 
     HWSensorsInfoLog("started");
 
-	return true;
+    return true;
 }
 
 void FakeSMCKeyStore::free()
@@ -622,7 +622,7 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
                     result = kIOReturnError;
             }
         }
-	}
+    }
     else if (functionName->isEqualTo(kFakeSMCGetKeyHandler)) {
 
         result = kIOReturnBadArgument;
@@ -647,7 +647,7 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
                 }
             }
         }
-	}
+    }
     else if (functionName->isEqualTo(kFakeSMCRemoveKeyHandler)) {
 
         result = kIOReturnBadArgument;
@@ -684,7 +684,7 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
                     result = kIOReturnError;
             }
         }
-	}
+    }
     else if (functionName->isEqualTo(kFakeSMCSetKeyValue)) {
 
         result = kIOReturnBadArgument;
@@ -704,7 +704,7 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
                 }
             }
         }
-	}
+    }
     else if (functionName->isEqualTo(kFakeSMCGetKeyValue)) {
 
         result = kIOReturnBadArgument;
@@ -728,7 +728,7 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
                 }
             }
         }
-	}
+    }
     else if (functionName->isEqualTo(kFakeSMCTakeVacantGPUIndex)) {
 
         result = kIOReturnBadArgument;
@@ -798,5 +798,5 @@ IOReturn FakeSMCKeyStore::newUserClient(task_t owningTask, void *security_id, UI
     
     SYNCUNLOCK;
     
-	return result;
+    return result;
 }*/

@@ -33,7 +33,7 @@
 #include "FakeSMCKey.h"
 
 class FakeSMCKeyHandler : public IOService {
-	OSDeclareAbstractStructors(FakeSMCKeyHandler)
+    OSDeclareAbstractStructors(FakeSMCKeyHandler)
 
     friend class FakeSMCKey;
 

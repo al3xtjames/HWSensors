@@ -32,41 +32,41 @@
 #define LM99_REG_MAN_ID         0xfe
 #define NATSEM_MAN_ID           0x01
 #define MAXIM_MAN_ID            0x4d
-#define MAX6659_REG_R_REMOTE_EMERG	0x16
-#define MAX6696_REG_R_STATUS2		0x12
+#define MAX6659_REG_R_REMOTE_EMERG  0x16
+#define MAX6696_REG_R_STATUS2       0x12
 #define LM99_REG_CHIP_ID        0xff
 #define LM90_REG_R_CONFIG1      0x03
-#define LM90_REG_R_CONFIG2		0xBF
-#define LM90_REG_R_CONVRATE		0x04
+#define LM90_REG_R_CONFIG2      0xBF
+#define LM90_REG_R_CONVRATE     0x04
 
 /* This function should return the chip type .. */
 int lm99_detect(I2CDevPtr dev)
 {
-	I2CByte man_id, chip_id, config1, config2, convrate, address = dev->SlaveAddr / 2;
+    I2CByte man_id, chip_id, config1, config2, convrate, address = dev->SlaveAddr / 2;
     const char *name = NULL;
     
     if (!xf86I2CReadByte(dev, LM99_REG_MAN_ID, &man_id) || !xf86I2CReadByte(dev, LM99_REG_CHIP_ID, &chip_id) || !xf86I2CReadByte(dev, LM90_REG_R_CONFIG1, &config1) || !xf86I2CReadByte(dev, LM90_REG_R_CONVRATE, &convrate))
-		return 0;
+        return 0;
     
     if (man_id == 0x01 || man_id == 0x5C || man_id == 0x41) {
-		if (!xf86I2CReadByte(dev, LM90_REG_R_CONVRATE, &config2))
-			return 0;
-	} else config2 = 0;
+        if (!xf86I2CReadByte(dev, LM90_REG_R_CONVRATE, &config2))
+            return 0;
+    } else config2 = 0;
     
     if ((address == 0x4C || address == 0x4D) && man_id == 0x01) { /* National Semiconductor */
-		if ((config1 & 0x2A) == 0x00 && (config2 & 0xF8) == 0x00 && convrate <= 0x09) {
-			if (address == 0x4C & (chip_id & 0xF0) == 0x20) { /* LM90 */
-				name = "National Semiconductor LM90";
+        if ((config1 & 0x2A) == 0x00 && (config2 & 0xF8) == 0x00 && convrate <= 0x09) {
+            if (address == 0x4C & (chip_id & 0xF0) == 0x20) { /* LM90 */
+                name = "National Semiconductor LM90";
                 dev->chip_id = LM99;
-			} else if ((chip_id & 0xF0) == 0x30) { /* LM89/LM99 */
+            } else if ((chip_id & 0xF0) == 0x30) { /* LM89/LM99 */
                 name = "National Semiconductor :M99";
                 dev->chip_id = LM99;
             } else if (address == 0x4C && (chip_id & 0xF0) == 0x10) { /* LM86 */
                 name = "National Semiconductor LM86";
                 dev->chip_id = LM99;
             }
-		}
-	}
+        }
+    }
     else if ((address == 0x4C || address == 0x4D) && man_id == 0x41) { /* Analog Devices */
         if ((chip_id & 0xF0) == 0x40 /* ADM1032 */ && (config1 & 0x3F) == 0x00 && convrate <= 0x0A) {
             name = "Analog Devices ADM1032";
@@ -172,8 +172,8 @@ int lm99_detect(I2CDevPtr dev)
         }
     }
     
-	if (!name) /* identification failed */
-		return 0;
+    if (!name) /* identification failed */
+        return 0;
     
     dev->chip_name = STRDUP(name, sizeof(name));
     

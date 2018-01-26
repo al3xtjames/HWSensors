@@ -15,7 +15,7 @@
 class GPUSensors : public FakeSMCPlugin
 {
     OSDeclareDefaultStructors(GPUSensors)
-	
+    
 private:
     IOWorkLoop*             workloop;
     IOTimerEventSource*     timerEventSource;

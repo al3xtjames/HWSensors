@@ -67,20 +67,20 @@ const UInt8 FINTEK_TEMPERATURE_EXT_REG[]     = { 0x7A, 0x7B, 0x7C, 0x7E };
 class F718xxSensors : public LPCSensors
 {
     OSDeclareDefaultStructors(F718xxSensors)
-	
+    
 private:
-	UInt8					readByte(UInt8 reg);	
+    UInt8                   readByte(UInt8 reg);    
     
     virtual UInt8           temperatureSensorsLimit();
     virtual UInt8           voltageSensorsLimit();
     virtual UInt8           tachometerSensorsLimit();
-	
-	virtual float			readTemperature(UInt32 index);
-	virtual float			readVoltage(UInt32 index);
-	virtual float			readTachometer(UInt32 index);
-	
-    virtual bool			initialize();
-	
+    
+    virtual float           readTemperature(UInt32 index);
+    virtual float           readVoltage(UInt32 index);
+    virtual float           readTachometer(UInt32 index);
+    
+    virtual bool            initialize();
+    
 public:
-	
+    
 };

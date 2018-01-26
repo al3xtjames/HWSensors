@@ -323,20 +323,20 @@ bool FakeSMCKey::decodeIntValue(const char *type, const UInt8 size, const void *
 FakeSMCKey *FakeSMCKey::withValue(const char *aKey, const char *aType, unsigned char aSize, const void *aValue)
 {
     FakeSMCKey *me = new FakeSMCKey;
-	
+    
     if (me && !me->init(aKey, aType, aSize, aValue))
         OSSafeReleaseNULL(me);
-	
+    
     return me;
 }
 
 FakeSMCKey *FakeSMCKey::withHandler(const char *aKey, const char *aType, const unsigned char aSize, FakeSMCKeyHandler *aHandler)
 {
     FakeSMCKey *me = new FakeSMCKey;
-	
+    
     if (me && !me->init(aKey, aType, aSize, 0, aHandler))
         OSSafeReleaseNULL(me);
-	
+    
     return me;
 }
 
@@ -345,63 +345,63 @@ bool FakeSMCKey::init(const char * aKey, const char * aType, const unsigned char
     if (!super::init())
         return false;
 
-	if (!aKey || strnlen(aKey, 4) == 0 || !(key = (char *)IOMalloc(5)))
-		return false;
-	
-	copySymbol(aKey, key);
+    if (!aKey || strnlen(aKey, 4) == 0 || !(key = (char *)IOMalloc(5)))
+        return false;
     
-	size = aSize > 32 ? 32 : aSize;
-	
-	if (!(type = (char *)IOMalloc(5)))
-		return false;
+    copySymbol(aKey, key);
     
-	if (!aType || strnlen(aType, 4) == 0) {
-		switch (size) 
-		{
-			case 1:
-				copySymbol("ui8", type);
-				break;
-			case 2:
-				copySymbol("ui16", type);
-				break;
-			case 4:
-				copySymbol("ui32", type);
-				break;
-			default:
-				copySymbol("ch8*", type);
-				break;
-		}
-	}
-	else copySymbol(aType, type);
-	
-	if (size == 0)
-		size++;
+    size = aSize > 32 ? 32 : aSize;
     
-	if (!(value = IOMalloc(size)))
-		return false;
-	
-	if (aValue)
-		bcopy(aValue, value, size);
-	else
-		bzero(value, size);
+    if (!(type = (char *)IOMalloc(5)))
+        return false;
+    
+    if (!aType || strnlen(aType, 4) == 0) {
+        switch (size) 
+        {
+            case 1:
+                copySymbol("ui8", type);
+                break;
+            case 2:
+                copySymbol("ui16", type);
+                break;
+            case 4:
+                copySymbol("ui32", type);
+                break;
+            default:
+                copySymbol("ch8*", type);
+                break;
+        }
+    }
+    else copySymbol(aType, type);
+    
+    if (size == 0)
+        size++;
+    
+    if (!(value = IOMalloc(size)))
+        return false;
+    
+    if (aValue)
+        bcopy(aValue, value, size);
+    else
+        bzero(value, size);
 
     handler = aHandler;
-	
+    
     return true;
 }
 
 void FakeSMCKey::free() 
 {
-	if (key)
-		IOFree(key, 5);
-	
-	if (type)
-		IOFree(type, 5);
-	
-	if (value)
-		IOFree(value, size);
-	
-	super::free(); 
+    if (key)
+        IOFree(key, 5);
+    
+    if (type)
+        IOFree(type, 5);
+    
+    if (value)
+        IOFree(value, size);
+    
+    super::free(); 
 }
 
 const char *FakeSMCKey::getName() { return "FakeSMCKey"; }; // this is used by logging functions
@@ -414,7 +414,7 @@ const UInt8 FakeSMCKey::getSize() const { return size; };
 
 const void *FakeSMCKey::getValue() 
 { 
-	if (handler) {
+    if (handler) {
         
         double time = ptimer_read_seconds();
 
@@ -430,9 +430,9 @@ const void *FakeSMCKey::getValue()
                 HWSensorsWarningLog("value update request callback returned error for key %s (%s)", key, handler->stringFromReturn(result));
             }
         }
-	}
+    }
     
-	return value; 
+    return value; 
 };
 
 FakeSMCKeyHandler *FakeSMCKey::getHandler() { return handler; };
@@ -456,22 +456,22 @@ bool FakeSMCKey::setSize(UInt8 aSize)
 
 bool FakeSMCKey::setValueFromBuffer(const void *aBuffer, UInt8 aSize)
 {
-	if (!aBuffer || aSize == 0) 
-		return false;
-	
-	if (aSize != size) {
-		if (value)
-			IOFree(value, size);
-		
-		size = aSize;
-		
-		if (!(value = IOMalloc(size)))
-			return false;
-	}
-	
-	bcopy(aBuffer, value, size);
+    if (!aBuffer || aSize == 0) 
+        return false;
+    
+    if (aSize != size) {
+        if (value)
+            IOFree(value, size);
+        
+        size = aSize;
+        
+        if (!(value = IOMalloc(size)))
+            return false;
+    }
+    
+    bcopy(aBuffer, value, size);
 
-	if (handler) {
+    if (handler) {
         
         /*double time = ptimer_read_seconds();
         
@@ -493,8 +493,8 @@ bool FakeSMCKey::setValueFromBuffer(const void *aBuffer, UInt8 aSize)
             HWSensorsWarningLog("value changed event callback returned error for key %s (%s)", key, handler->stringFromReturn(result));
         }
     }
-	
-	return true;
+    
+    return true;
 }
 
 bool FakeSMCKey::setHandler(FakeSMCKeyHandler *newHandler)
@@ -511,17 +511,17 @@ bool FakeSMCKey::setHandler(FakeSMCKeyHandler *newHandler)
         }
     }
 
-	return false;
+    return false;
 }
 
 bool FakeSMCKey::isEqualTo(const char *aKey)
 {
-	return strncmp(key, aKey, 4) == 0;
+    return strncmp(key, aKey, 4) == 0;
 }
 
 bool FakeSMCKey::isEqualTo(FakeSMCKey *aKey)
 {
-	return (aKey && aKey->isEqualTo(key));
+    return (aKey && aKey->isEqualTo(key));
 }
 
 bool FakeSMCKey::isEqualTo(const OSMetaClassBase *anObject)

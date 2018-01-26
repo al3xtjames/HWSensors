@@ -25,16 +25,16 @@ typedef void *pointer;
 
 /* Flags for driver messages */
 typedef enum {
-    X_PROBED,			/* Value was probed */
-    X_CONFIG,			/* Value was given in the config file */
-    X_DEFAULT,			/* Value is a default */
-    X_CMDLINE,			/* Value was given on the command line */
-    X_NOTICE,			/* Notice */
-    X_ERROR,			/* Error message */
-    X_WARNING,			/* Warning message */
-    X_INFO,			/* Informational message */
-    X_NONE,			/* No prefix */
-    X_NOT_IMPLEMENTED		/* Not implemented */
+    X_PROBED,           /* Value was probed */
+    X_CONFIG,           /* Value was given in the config file */
+    X_DEFAULT,          /* Value is a default */
+    X_CMDLINE,          /* Value was given on the command line */
+    X_NOTICE,           /* Notice */
+    X_ERROR,            /* Error message */
+    X_WARNING,          /* Warning message */
+    X_INFO,         /* Informational message */
+    X_NONE,         /* No prefix */
+    X_NOT_IMPLEMENTED       /* Not implemented */
 } MessageType;
 
 typedef union _DevUnion {

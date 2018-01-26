@@ -41,7 +41,7 @@
 
 bool nvc0_identify(struct nouveau_device *device)
 {
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0xc0:
             device->cname = "GF100";
             break;
@@ -71,7 +71,7 @@ bool nvc0_identify(struct nouveau_device *device)
             return false;
     }
     
-	return true;
+    return true;
 }
 
 void nvc0_init(struct nouveau_device *device)
@@ -102,25 +102,25 @@ static u32 read_pll(struct nouveau_device *, u32);
 
 static u32 read_vco(struct nouveau_device *device, u32 dsrc)
 {
-	u32 ssrc = nv_rd32(device, dsrc);
-	if (!(ssrc & 0x00000100))
-		return read_pll(device, 0x00e800);
-	return read_pll(device, 0x00e820);
+    u32 ssrc = nv_rd32(device, dsrc);
+    if (!(ssrc & 0x00000100))
+        return read_pll(device, 0x00e800);
+    return read_pll(device, 0x00e820);
 }
 
 static u32 read_pll(struct nouveau_device *device, u32 pll)
 {
-	u32 ctrl = nv_rd32(device, pll + 0);
-	u32 coef = nv_rd32(device, pll + 4);
-	u32 P = (coef & 0x003f0000) >> 16;
-	u32 N = (coef & 0x0000ff00) >> 8;
-	u32 M = (coef & 0x000000ff) >> 0;
-	u32 sclk, doff;
+    u32 ctrl = nv_rd32(device, pll + 0);
+    u32 coef = nv_rd32(device, pll + 4);
+    u32 P = (coef & 0x003f0000) >> 16;
+    u32 N = (coef & 0x0000ff00) >> 8;
+    u32 M = (coef & 0x000000ff) >> 0;
+    u32 sclk, doff;
     
-	if (!(ctrl & 0x00000001))
-		return 0;
+    if (!(ctrl & 0x00000001))
+        return 0;
     
-	switch (pll & 0xfff000) {
+    switch (pll & 0xfff000) {
         case 0x00e000:
             sclk = 27000;
             P = 1;
@@ -143,17 +143,17 @@ static u32 read_pll(struct nouveau_device *device, u32 pll)
             break;
         default:
             return 0;
-	}
+    }
     
-	return sclk * N / M / P;
+    return sclk * N / M / P;
 }
 
 static u32 read_div(struct nouveau_device *device, int doff, u32 dsrc, u32 dctl)
 {
-	u32 ssrc = nv_rd32(device, dsrc + (doff * 4));
-	u32 sctl = nv_rd32(device, dctl + (doff * 4));
+    u32 ssrc = nv_rd32(device, dsrc + (doff * 4));
+    u32 sctl = nv_rd32(device, dctl + (doff * 4));
     
-	switch (ssrc & 0x00000003) {
+    switch (ssrc & 0x00000003) {
         case 0:
             if ((ssrc & 0x00030000) != 0x00030000)
                 return 27000;
@@ -170,43 +170,43 @@ static u32 read_div(struct nouveau_device *device, int doff, u32 dsrc, u32 dctl)
             return read_vco(device, dsrc + (doff * 4));
         default:
             return 0;
-	}
+    }
 }
 
 static u32 read_mem(struct nouveau_device *device)
 {
-	u32 ssel = nv_rd32(device, 0x1373f0);
+    u32 ssel = nv_rd32(device, 0x1373f0);
     u32 base = read_div(device, 0, 0x137300, 0x137310);
-	
+    
     if (ssel & 0x00000001)
-		return base / 2.0f;
+        return base / 2.0f;
 
     if (device->card_type == NV_C0)
         return read_pll(device, 0x132000) / 4.0f;
     
-	return read_pll(device, 0x132000);
+    return read_pll(device, 0x132000);
 }
 
 static u32 read_clk(struct nouveau_device *device, int clk)
 {
-	u32 sctl = nv_rd32(device, 0x137250 + (clk * 4));
-	u32 ssel = nv_rd32(device, 0x137100);
-	u32 sclk, sdiv;
+    u32 sctl = nv_rd32(device, 0x137250 + (clk * 4));
+    u32 ssel = nv_rd32(device, 0x137100);
+    u32 sclk, sdiv;
     
-	if (ssel & (1 << clk)) {
-		if (clk < 7)
-			sclk = read_pll(device, 0x137000 + (clk * 0x20));
-		else
-			sclk = read_pll(device, 0x1370e0);
-		sdiv = ((sctl & 0x00003f00) >> 8) + 2;
-	} else {
-		sclk = read_div(device, clk, 0x137160, 0x1371d0);
-		sdiv = ((sctl & 0x0000003f) >> 0) + 2;
-	}
+    if (ssel & (1 << clk)) {
+        if (clk < 7)
+            sclk = read_pll(device, 0x137000 + (clk * 0x20));
+        else
+            sclk = read_pll(device, 0x1370e0);
+        sdiv = ((sctl & 0x00003f00) >> 8) + 2;
+    } else {
+        sclk = read_div(device, clk, 0x137160, 0x1371d0);
+        sdiv = ((sctl & 0x0000003f) >> 0) + 2;
+    }
     
-	if (sctl & 0x80000000)
-		return (sclk * 2) / sdiv;
-	return sclk;
+    if (sctl & 0x80000000)
+        return (sclk * 2) / sdiv;
+    return sclk;
 }
 
 int nvc0_clocks_get(struct nouveau_device *device, u8 source)

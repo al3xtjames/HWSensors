@@ -150,7 +150,7 @@ static inline void rep_nop(void)
 
 #define cpu_relax()   rep_nop()
 
-#define I2C_NAME_SIZE	20
+#define I2C_NAME_SIZE   20
 
 #define min_t(type, x, y) ({                    \
         type __min1 = (x);                      \

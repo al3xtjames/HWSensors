@@ -187,10 +187,10 @@ bool ACPISensors::start(IOService * provider)
 {
     ACPISensorsDebugLog("starting...");
     
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
 
-	if (!(acpiDevice = OSDynamicCast(IOACPIPlatformDevice, provider))) {
+    if (!(acpiDevice = OSDynamicCast(IOACPIPlatformDevice, provider))) {
         ACPISensorsFatalLog("ACPI device not ready");
         return false;
     }
@@ -267,9 +267,9 @@ bool ACPISensors::start(IOService * provider)
     if (methods->getCount())
         ACPISensorsInfoLog("%d sensor%s added", methods->getCount(), methods->getCount() > 1 ? "s" : "");
 
-	registerService();
+    registerService();
     
     ACPISensorsInfoLog("started");
 
-	return true;	
+    return true;    
 }

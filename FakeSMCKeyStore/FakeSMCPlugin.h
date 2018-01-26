@@ -32,7 +32,7 @@
 #include "FakeSMCSensor.h"
 
 class FakeSMCPlugin : public FakeSMCKeyHandler {
-	OSDeclareAbstractStructors(FakeSMCPlugin)
+    OSDeclareAbstractStructors(FakeSMCPlugin)
 
 private:
     virtual IOReturn        readKeyCallback(const char *key, const char *type, const UInt8 size, void *buffer);
@@ -63,9 +63,9 @@ protected:
     virtual FakeSMCSensor   *addSensorForKey(const char *key, const char *type, UInt8 size, UInt32 group, UInt32 index, float reference = 0.0f, float gain = 0.0f, float offset = 0.0f);
     virtual FakeSMCSensor   *addSensorUsingAbbreviation(const char *abbreviation, FakeSMCSensorCategory category, UInt32 group, UInt32 index, float reference = 0.0f, float gain = 0.0f, float offset = 0.0f);
     virtual FakeSMCSensor   *addSensorFromNode(OSObject *node, FakeSMCSensorCategory category, UInt32 group, UInt32 index);
-    	virtual FakeSMCSensor   *addTachometer(UInt32 index, const char *name = 0, FanType type = FAN_RPM, UInt8 zone = 0, FanLocationType location = CENTER_MID_FRONT, UInt8 *fanIndex = 0);
+        virtual FakeSMCSensor   *addTachometer(UInt32 index, const char *name = 0, FanType type = FAN_RPM, UInt8 zone = 0, FanLocationType location = CENTER_MID_FRONT, UInt8 *fanIndex = 0);
     virtual bool            addSensor(FakeSMCSensor *sensor);
-	virtual FakeSMCSensor   *getSensor(const char *key);
+    virtual FakeSMCSensor   *getSensor(const char *key);
     
     OSDictionary            *getConfigurationNode(OSDictionary *root, OSString *name);
     OSDictionary            *getConfigurationNode(OSDictionary *root, const char *name);
@@ -81,11 +81,11 @@ public:
     bool                    decodeFloatValueForKey(const char *name, float *outValue);
     bool                    decodeIntValueForKey(const char *name, int *outValue);
 
-	virtual bool			init(OSDictionary *properties=0);
-    virtual bool			start(IOService *provider);
+    virtual bool            init(OSDictionary *properties=0);
+    virtual bool            start(IOService *provider);
     virtual IOReturn        setPowerState(unsigned long powerState, IOService *device);
-	virtual void			stop(IOService *provider);
-	virtual void			free(void);
+    virtual void            stop(IOService *provider);
+    virtual void            free(void);
 };
 
 #endif

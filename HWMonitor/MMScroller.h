@@ -10,10 +10,10 @@
 
 
 @interface MMScroller : NSScroller {
-	int _animationStep;
-	float _oldValue;
-	BOOL _scheduled;
-	BOOL _disableFade;
+    int _animationStep;
+    float _oldValue;
+    BOOL _scheduled;
+    BOOL _disableFade;
     BOOL _shouldClearBackground;
 }
 

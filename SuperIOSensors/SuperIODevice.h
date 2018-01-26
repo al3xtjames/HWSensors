@@ -30,7 +30,7 @@ const UInt8 kFintekITEHardwareMonitorLDN  = 0x04;
 enum SuperIOModel
 {
     // ITE
-	IT8512F     = 0x8512,
+    IT8512F     = 0x8512,
     IT8705F     = 0x8705,
     IT8712F     = 0x8712,
     IT8716F     = 0x8716,
@@ -41,37 +41,37 @@ enum SuperIOModel
     IT8620E     = 0x8620,
     IT8628E     = 0x8628,
     IT8686E     = 0x8686,
-	IT8728F     = 0x8728,
-	IT8752F     = 0x8752,
+    IT8728F     = 0x8728,
+    IT8752F     = 0x8752,
     IT8771E     = 0x8771,
     IT8772E     = 0x8772,
     IT8792E     = 0x8792,
     
     // Winbond
-    W83627DHG	= 0xA020,
-	W83627UHG	= 0xA230,
-    W83627DHGP	= 0xB070,
-    W83627EHF	= 0x8800,    
-    W83627HF	= 0x5200,
-	W83627THF	= 0x8280,
-	W83627SF	= 0x5950,
-	W83637HF	= 0x7080,
-    W83667HG	= 0xA510,
-    W83667HGB	= 0xB350,
-    W83687THF	= 0x8541,
-	W83697HF	= 0x6010,
-	W83697SF	= 0x6810,
+    W83627DHG   = 0xA020,
+    W83627UHG   = 0xA230,
+    W83627DHGP  = 0xB070,
+    W83627EHF   = 0x8800,    
+    W83627HF    = 0x5200,
+    W83627THF   = 0x8280,
+    W83627SF    = 0x5950,
+    W83637HF    = 0x7080,
+    W83667HG    = 0xA510,
+    W83667HGB   = 0xB350,
+    W83687THF   = 0x8541,
+    W83697HF    = 0x6010,
+    W83697SF    = 0x6810,
     
     // Fintek
-    F71858		= 0x0507,
-    F71862		= 0x0601,
+    F71858      = 0x0507,
+    F71862      = 0x0601,
     F71868A     = 0x1106,
-    F71869		= 0x0814,
+    F71869      = 0x0814,
     F71869A     = 0x1007,
-    F71882		= 0x0541,
+    F71882      = 0x0541,
     F71889AD    = 0x1005,
-    F71889ED	= 0x0909,
-    F71889F		= 0x0723,
+    F71889ED    = 0x0909,
+    F71889F     = 0x0723,
     F71808E     = 0x0901,
     
     // Nuvoton
@@ -87,45 +87,45 @@ enum SuperIOModel
 
 inline UInt8 superio_listen_port_byte(i386_ioport_t port, UInt8 reg)
 {
-	outb(port, reg);
-	return inb(port + 1);
+    outb(port, reg);
+    return inb(port + 1);
 }
 
 inline UInt16 superio_listen_port_word(i386_ioport_t port, UInt8 reg)
 {
-	return ((superio_listen_port_byte(port, reg) << 8) | superio_listen_port_byte(port, reg + 1));
+    return ((superio_listen_port_byte(port, reg) << 8) | superio_listen_port_byte(port, reg + 1));
 }
 
 inline void superio_write_port_byte(i386_ioport_t port, UInt8 reg, UInt8 value)
 {
-	outb(port, reg);
-	outb(port + 1, value);
+    outb(port, reg);
+    outb(port + 1, value);
 }
 
 inline void superio_select_logical_device(i386_ioport_t port, UInt8 reg)
 {
-	outb(port, kSuperIODeviceSelectRegister);
-	outb(port + 1, reg);
+    outb(port, kSuperIODeviceSelectRegister);
+    outb(port + 1, reg);
 }
 
 inline void ite_family_enter(i386_ioport_t port)
 {
     outb(port, 0x87);
-	outb(port, 0x01);
-	outb(port, 0x55);
-	outb(port, 0x55);
+    outb(port, 0x01);
+    outb(port, 0x55);
+    outb(port, 0x55);
 }
 
 inline void ite_family_exit(i386_ioport_t port)
 {
     outb(port, kSuperIOConfigControlRegister);
-	outb(port + 1, 0x02);
+    outb(port + 1, 0x02);
 }
 
 inline void winbond_family_enter(i386_ioport_t port)
 {
     outb(port, 0x87);
-	outb(port, 0x87);
+    outb(port, 0x87);
 }
 
 inline void winbond_family_exit(i386_ioport_t port)
@@ -193,7 +193,7 @@ inline const char* superio_get_model_name(UInt16 model)
 
 class SuperIODevice : public IOService
 {
-	OSDeclareDefaultStructors(SuperIODevice)
+    OSDeclareDefaultStructors(SuperIODevice)
     
 private:
     UInt16              id;
@@ -205,13 +205,13 @@ private:
     
     bool                detectWinbondFamilyChip(void);
     bool                detectITEFamilyChip(void);
-	
+    
 public:
-    virtual bool		init(OSDictionary *dictionary = 0);
-    virtual IOService	*probe(IOService *provider, SInt32 *score);
-    virtual bool		start(IOService *provider);
+    virtual bool        init(OSDictionary *dictionary = 0);
+    virtual IOService   *probe(IOService *provider, SInt32 *score);
+    virtual bool        start(IOService *provider);
     virtual void        stop(IOService *provider);
-    virtual void		free(void);
+    virtual void        free(void);
 };
 
 #endif

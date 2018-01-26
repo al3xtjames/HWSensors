@@ -312,10 +312,10 @@ bool SuperIODevice::detectITEFamilyChip()
 
 bool SuperIODevice::init(OSDictionary *dictionary)
 {
-	if (!super::init(dictionary))
-		return false;
+    if (!super::init(dictionary))
+        return false;
     
-	return true;
+    return true;
 }
 
 IOService *SuperIODevice::probe(IOService *provider, SInt32 *score)
@@ -325,7 +325,7 @@ IOService *SuperIODevice::probe(IOService *provider, SInt32 *score)
 
 bool SuperIODevice::start(IOService *provider)
 {
-	if (!super::start(provider)) return false;
+    if (!super::start(provider)) return false;
 
     // Gigabyte mobos usualy use ITE
     if (OSDictionary *matching = serviceMatching(kFakeSMCService)) {

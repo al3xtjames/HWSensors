@@ -10,12 +10,12 @@
 #define HWSensors_nouveau_temp_h
 
 struct nvbios_therm_sensor {
-	/* diode */
-	s16 slope_mult;
-	s16 slope_div;
-	s16 offset_num;
-	s16 offset_den;
-	s8 offset_constant;
+    /* diode */
+    s16 slope_mult;
+    s16 slope_div;
+    s16 offset_num;
+    s16 offset_den;
+    s8 offset_constant;
 };
 
 void nouveau_therm_init(struct nouveau_device *device);

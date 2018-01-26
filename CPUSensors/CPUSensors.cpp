@@ -105,7 +105,7 @@ inline uint64_t rdmpc64(uint32_t counter)
 
 //static inline UInt8 get_hex_index(char c)
 //{       
-//	return c > 96 && c < 103 ? c - 87 : c > 47 && c < 58 ? c - 48 : 0;
+//  return c > 96 && c < 103 ? c - 87 : c > 47 && c < 58 ? c - 48 : 0;
 //};
 
 static inline UInt8 get_cpu_number()
@@ -432,16 +432,16 @@ bool CPUSensors::start(IOService *provider)
     // Pre-checks
     
     cpuid_set_info();
-	
-	if (strcmp(cpuid_info()->cpuid_vendor, CPUID_VID_INTEL) != 0)	{
-		HWSensorsFatalLog("no Intel processor found");
-		return false;
-	}
-	
-	if(!(cpuid_info()->cpuid_features & CPUID_FEATURE_MSR))	{
-		HWSensorsFatalLog("processor does not support Model Specific Registers (MSR)");
-		return false;
-	}
+    
+    if (strcmp(cpuid_info()->cpuid_vendor, CPUID_VID_INTEL) != 0)   {
+        HWSensorsFatalLog("no Intel processor found");
+        return false;
+    }
+    
+    if(!(cpuid_info()->cpuid_features & CPUID_FEATURE_MSR)) {
+        HWSensorsFatalLog("processor does not support Model Specific Registers (MSR)");
+        return false;
+    }
 
     // Init timer
 
@@ -488,10 +488,10 @@ bool CPUSensors::start(IOService *provider)
 
     // Estimating Tjmax value if not set
     if (!cpu_tjmax[0]) {
-		switch (cpuid_info()->cpuid_family)
-		{
-			case 0x06: 
-				switch (cpuid_info()->cpuid_model) 
+        switch (cpuid_info()->cpuid_family)
+        {
+            case 0x06: 
+                switch (cpuid_info()->cpuid_model) 
                 {
                     case CPUID_MODEL_PENTIUM_M:
                         cpu_tjmax[0] = 100;
@@ -636,11 +636,11 @@ bool CPUSensors::start(IOService *provider)
                         break;
                 }
                 break;
-				
-			default:
-				HWSensorsFatalLog("found unknown Intel processor family");
-				return false;
-		}
+                
+            default:
+                HWSensorsFatalLog("found unknown Intel processor family");
+                return false;
+        }
 
         // Setup Tjmax
         switch (cpuid_info()->cpuid_cpufamily) {
@@ -660,7 +660,7 @@ bool CPUSensors::start(IOService *provider)
                 break;
             }
         }
-	}
+    }
 
     // bus clock
     busClock = 0;
@@ -871,15 +871,15 @@ bool CPUSensors::start(IOService *provider)
     }
     
     // two power states - off and on
-	static const IOPMPowerState powerStates[2] = {
+    static const IOPMPowerState powerStates[2] = {
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 1, IOPMDeviceUsable, IOPMPowerOn, IOPMPowerOn, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     // register interest in power state changes
-	PMinit();
-	provider->joinPMtree(this);
-	registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
+    PMinit();
+    provider->joinPMtree(this);
+    registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
 
     // Register service
     registerService();
@@ -895,7 +895,7 @@ IOReturn CPUSensors::setPowerState(unsigned long powerState, IOService *device)
 {
     void *magic;
 
-	switch (powerState) {
+    switch (powerState) {
         case 0: // Power Off
                 //timerEventSource->cancelTimeout();
             break;
@@ -911,7 +911,7 @@ IOReturn CPUSensors::setPowerState(unsigned long powerState, IOService *device)
             break;
     }
 
-	return(IOPMAckImplied);
+    return(IOPMAckImplied);
 }
 
 void CPUSensors::stop(IOService *provider)

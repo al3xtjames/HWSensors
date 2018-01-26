@@ -48,15 +48,15 @@
 
 static inline u32 tn_smc_rreg(struct radeon_device *rdev, u32 reg)
 {
-	//unsigned long flags;
-	u32 r;
+    //unsigned long flags;
+    u32 r;
     
-	//spin_lock_irqsave(&rdev->smc_idx_lock, flags);
-	WREG32(TN_SMC_IND_INDEX_0, (reg));
-	r = RREG32(TN_SMC_IND_DATA_0);
+    //spin_lock_irqsave(&rdev->smc_idx_lock, flags);
+    WREG32(TN_SMC_IND_INDEX_0, (reg));
+    r = RREG32(TN_SMC_IND_DATA_0);
     
-	//spin_unlock_irqrestore(&rdev->smc_idx_lock, flags);
-	return r;
+    //spin_unlock_irqrestore(&rdev->smc_idx_lock, flags);
+    return r;
 }
 
 static inline u32 mm_smc_rreg(struct radeon_device *rdev, u32 reg)

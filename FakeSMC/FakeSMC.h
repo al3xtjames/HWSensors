@@ -9,15 +9,15 @@ class FakeSMCDevice;
 
 class FakeSMC : public IOService
 {
-	OSDeclareDefaultStructors(FakeSMC)
-	
+    OSDeclareDefaultStructors(FakeSMC)
+    
 private:
     FakeSMCKeyStore     *keyStore;
     FakeSMCDevice       *smcDevice;
 
 public:
-    virtual bool		init(OSDictionary *dictionary = 0);
-    virtual bool		start(IOService *provider);
+    virtual bool        init(OSDictionary *dictionary = 0);
+    virtual bool        start(IOService *provider);
     
 };
 

@@ -60,10 +60,10 @@ void ACPIProbeUserClient::stop(IOService* provider)
 
 bool ACPIProbeUserClient::initWithTask(task_t owningTask, void* securityID, UInt32 type, OSDictionary* properties)
 {
-	if (super::initWithTask(owningTask, securityID, type, properties)) {
+    if (super::initWithTask(owningTask, securityID, type, properties)) {
         acpiProbe = NULL;
         return true;
-	}
+    }
 
     HWSensorsFatalLog("super failed to initialize with task!");
 
@@ -72,7 +72,7 @@ bool ACPIProbeUserClient::initWithTask(task_t owningTask, void* securityID, UInt
 
 IOReturn ACPIProbeUserClient::clientClose(void)
 {
-	if( !isInactive())
+    if( !isInactive())
         terminate();
 
     return kIOReturnSuccess;
@@ -80,14 +80,14 @@ IOReturn ACPIProbeUserClient::clientClose(void)
 
 IOReturn ACPIProbeUserClient::externalMethod(uint32_t selector, IOExternalMethodArguments* arguments, IOExternalMethodDispatch * dispatch, OSObject * target, void * reference )
 {
-	IOReturn result = kIOReturnError;
+    IOReturn result = kIOReturnError;
 
-	if (acpiProbe == NULL || isInactive()) {
-		return kIOReturnNotAttached;
-	}
-//	else if (!acpiProbe->isOpen(this)) {
-//		return kIOReturnNotOpen;
-//	}
+    if (acpiProbe == NULL || isInactive()) {
+        return kIOReturnNotAttached;
+    }
+//  else if (!acpiProbe->isOpen(this)) {
+//      return kIOReturnNotOpen;
+//  }
 
     SYNCLOCK;
 

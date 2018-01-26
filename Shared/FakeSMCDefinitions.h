@@ -26,8 +26,8 @@
 // GPU
 #define KEY_GPU_DIODE_TEMPERATURE               "TG0D"
 #define KEY_FORMAT_GPU_DIODE_TEMPERATURE        "TG%XD"
-#define	KEY_GPU_HEATSINK_TEMPERATURE            "TG0H"
-#define	KEY_FORMAT_GPU_HEATSINK_TEMPERATURE		"TG%XH"
+#define KEY_GPU_HEATSINK_TEMPERATURE            "TG0H"
+#define KEY_FORMAT_GPU_HEATSINK_TEMPERATURE     "TG%XH"
 #define KEY_GPU_PROXIMITY_TEMPERATURE           "TG0P"
 #define KEY_FORMAT_GPU_PROXIMITY_TEMPERATURE    "TG%XP"
 #define KEY_GPU_MEMORY_TEMPERATURE              "TG0M"
@@ -136,10 +136,10 @@
 #define KEY_FORMAT_FAN_TARGET                   "F%XTg"
 
 // Other
-#define KEY_FAKESMC_FORMAT_CPU_FREQUENCY		"CC%XC"
+#define KEY_FAKESMC_FORMAT_CPU_FREQUENCY        "CC%XC"
 #define KEY_FAKESMC_CPU_PACKAGE_FREQUENCY       "CCPC"
 
-#define KEY_FAKESMC_FORMAT_CPU_FREQUENCY_AVERAGE		"CC%XA"
+#define KEY_FAKESMC_FORMAT_CPU_FREQUENCY_AVERAGE        "CC%XA"
 #define KEY_FAKESMC_CPU_PACKAGE_FREQUENCY_AVERAGE       "CCPA"
 
 #define KEY_FAKESMC_GPU_FREQUENCY               "CG0C"
@@ -151,7 +151,7 @@
 #define KEY_FAKESMC_GPU_ROP_FREQUENCY           "CG0R"
 #define KEY_FAKESMC_FORMAT_GPU_ROP_FREQUENCY    "CG%XR"
 
-#define KEY_FAKESMC_FORMAT_CPU_MULTIPLIER		"MlC%X"
+#define KEY_FAKESMC_FORMAT_CPU_MULTIPLIER       "MlC%X"
 #define KEY_FAKESMC_CPU_PACKAGE_MULTIPLIER      "MlCP"
 
 // Services
@@ -187,11 +187,11 @@
 
 #define kHWSensorsDebug                         0
 
-#define HWSensorsDebugLog(string, args...)	do { if (kHWSensorsDebug) { IOLog ("%s: [Debug] " string "\n", getName(), ## args); } } while(0)
+#define HWSensorsDebugLog(string, args...)  do { if (kHWSensorsDebug) { IOLog ("%s: [Debug] " string "\n", getName(), ## args); } } while(0)
 #define HWSensorsWarningLog(string, args...) do { IOLog ("%s: [Warning] " string "\n",getName() , ## args); } while(0)
 #define HWSensorsErrorLog(string, args...) do { IOLog ("%s: [Error] " string "\n",getName() , ## args); } while(0)
 #define HWSensorsFatalLog(string, args...) do { IOLog ("%s: [Fatal] " string "\n",getName() , ## args); } while(0)
-#define HWSensorsInfoLog(string, args...)	do { IOLog ("%s: " string "\n",getName() , ## args); } while(0)
+#define HWSensorsInfoLog(string, args...)   do { IOLog ("%s: " string "\n",getName() , ## args); } while(0)
 
 #define HWSensorsKeyToInt(name) *((uint32_t*)name)
 
@@ -200,7 +200,7 @@
 #define bit_clear(p,m) ((p) &= ~(m))
 #define bit_flip(p,m) ((p) ^= (m))
 #define bit_write(c,p,m) (c ? bit_set(p,m) : bit_clear(p,m))
-#define BIT(x)	(0x01 << (x))
+#define BIT(x)  (0x01 << (x))
 #define LONGBIT(x) ((unsigned long)0x00000001 << (x))
 
 //#define ABS(x) ((x) >= 0 ? (x) : -(x))

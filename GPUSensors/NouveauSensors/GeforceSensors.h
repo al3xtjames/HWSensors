@@ -39,7 +39,7 @@
 class GeforceSensors : public GPUSensors
 {
     OSDeclareDefaultStructors(GeforceSensors)    
-	
+    
 private:
     nouveau_device      card;
     

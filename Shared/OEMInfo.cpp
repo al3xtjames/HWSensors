@@ -65,12 +65,12 @@ SMBPackedStrings::SMBPackedStrings( const SMBStructHeader * header,
 SMBPackedStrings::SMBPackedStrings( const SMBStructHeader * header )
 {
     _start = (const char *) header + header->length;
-	
-	const char * cp = _start;
-	// Find the double null at the end of the record
-	while( cp[0] || cp[1]) cp++;
-	
-	_limit = &cp[1];
+    
+    const char * cp = _start;
+    // Find the double null at the end of the record
+    while( cp[0] || cp[1]) cp++;
+    
+    _limit = &cp[1];
 }
 
 const char * SMBPackedStrings::stringAtIndex( UInt8 index, UInt8 * length ) const
@@ -223,13 +223,13 @@ static void decodeSMBIOSStructure(IOService *provider, const SMBStructHeader *st
     const union SMBStructUnion {
         SMBBIOSInformation      bios;
         SMBSystemInformation    system;
-		SMBBaseBoard			baseBoard;
+        SMBBaseBoard            baseBoard;
         SMBMemoryModule         memoryModule;
         SMBSystemSlot           slot;
         SMBPhysicalMemoryArray  memoryArray;
         SMBMemoryDevice         memoryDevice;
-		SMBFirmwareVolume       fv;
-		SMBMemorySPD            spd;
+        SMBFirmwareVolume       fv;
+        SMBMemorySPD            spd;
     } * u = (const SMBStructUnion *) structureHeader;
     
     SMBPackedStrings strings = SMBPackedStrings( structureHeader,
@@ -245,10 +245,10 @@ static void decodeSMBIOSStructure(IOService *provider, const SMBStructHeader *st
             //processSMBIOSStructureType1( &u->system, &strings );
             break;
             
-		case kSMBTypeBaseBoard:
-			processSMBIOSStructureType2(provider, &u->baseBoard, &strings );
-			break;
-			
+        case kSMBTypeBaseBoard:
+            processSMBIOSStructureType2(provider, &u->baseBoard, &strings );
+            break;
+            
         case kSMBTypeMemoryModule:
             //            processSMBIOSStructureType6( &u->memoryModule, &strings );
             break;
@@ -266,12 +266,12 @@ static void decodeSMBIOSStructure(IOService *provider, const SMBStructHeader *st
             break;
             
         case kSMBTypeFirmwareVolume:
-            //			processSMBIOSStructureType128( &u->fv, &strings );
-			break;
+            //          processSMBIOSStructureType128( &u->fv, &strings );
+            break;
             
-		case kSMBTypeMemorySPD:
-            //			processSMBIOSStructureType130( &u->spd, &strings );
-			break;
+        case kSMBTypeMemorySPD:
+            //          processSMBIOSStructureType130( &u->spd, &strings );
+            break;
     }
 }
 
@@ -308,10 +308,10 @@ static void decodeSMBIOSTable(IOService *provider, const void *tableData, UInt16
 static bool setOemPropertiesFromDMI(IOService *provider)
 {
     SMBEntryPoint* eps = 0;
-	IOMemoryDescriptor* dmiMemory = 0;
-	IOItemCount dmiStructureCount = 0;
+    IOMemoryDescriptor* dmiMemory = 0;
+    IOItemCount dmiStructureCount = 0;
 
-  	UInt8* biosAddress = NULL;
+    UInt8* biosAddress = NULL;
 
     IOMemoryDescriptor * biosMemory = 0;
     IOMemoryMap * biosMap = 0;
@@ -331,8 +331,8 @@ static bool setOemPropertiesFromDMI(IOService *provider)
     }
 
 
-	// Search 0x0f0000 - 0x0fffff for SMBIOS Ptr
-	if(biosAddress) {
+    // Search 0x0f0000 - 0x0fffff for SMBIOS Ptr
+    if(biosAddress) {
         for (UInt32 Address = 0; Address < biosMap->getLength(); Address += 0x10) {
             if (*(UInt32 *)(biosAddress + Address) == SMBIOS_PTR) {
                 eps = (SMBEntryPoint *)(biosAddress + Address);

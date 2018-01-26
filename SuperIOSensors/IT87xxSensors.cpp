@@ -51,27 +51,27 @@
 #include "SuperIODevice.h"
 #include "FakeSMCKey.h"
 
-#define FEATURE_12MV_ADC		(1 << 0)
-#define FEATURE_NEWER_AUTOPWM	(1 << 1)
+#define FEATURE_12MV_ADC        (1 << 0)
+#define FEATURE_NEWER_AUTOPWM   (1 << 1)
 #define FEATURE_OLD_AUTOPWM     (1 << 2)
-#define FEATURE_16BIT_FANS		(1 << 3)
+#define FEATURE_16BIT_FANS      (1 << 3)
 #define FEATURE_TEMP_OFFSET     (1 << 4)
-#define FEATURE_TEMP_PECI		(1 << 5)
-#define FEATURE_TEMP_OLD_PECI	(1 << 6)
+#define FEATURE_TEMP_PECI       (1 << 5)
+#define FEATURE_TEMP_OLD_PECI   (1 << 6)
 
 #define super LPCSensors
 OSDefineMetaClassAndStructors(IT87xxSensors, LPCSensors)
 
 UInt8 IT87xxSensors::readByte(UInt8 reg)
 {
-	outb(address + ITE_ADDRESS_REGISTER_OFFSET, reg);
-	return inb(address + ITE_DATA_REGISTER_OFFSET);
+    outb(address + ITE_ADDRESS_REGISTER_OFFSET, reg);
+    return inb(address + ITE_DATA_REGISTER_OFFSET);
 }
 
 void IT87xxSensors::writeByte(UInt8 reg, UInt8 value)
 {
-	outb(address + ITE_ADDRESS_REGISTER_OFFSET, reg);
-	outb(address + ITE_DATA_REGISTER_OFFSET, value);
+    outb(address + ITE_ADDRESS_REGISTER_OFFSET, reg);
+    outb(address + ITE_DATA_REGISTER_OFFSET, value);
 }
 
 UInt8 IT87xxSensors::temperatureSensorsLimit()
@@ -97,7 +97,7 @@ UInt8 IT87xxSensors::tachometerSensorsLimit()
 
 float IT87xxSensors::readTemperature(UInt32 index)
 {
-	return readByte(ITE_TEMPERATURE_BASE_REG + index);
+    return readByte(ITE_TEMPERATURE_BASE_REG + index);
 }
 
 float IT87xxSensors::readVoltage(UInt32 index)
@@ -218,16 +218,16 @@ bool IT87xxSensors::initialize()
 {
     UInt8 vendor = readByte(ITE_VENDOR_ID_REGISTER);
     
-	if (vendor != ITE_VENDOR_ID) {
+    if (vendor != ITE_VENDOR_ID) {
         HWSensorsFatalLog("invalid vendor ID=0x%x", vendor);
         model = 0;
- 		return false;
+        return false;
     }
-	
-	if ((readByte(ITE_CONFIGURATION_REGISTER) & 0x10) == 0) {
+    
+    if ((readByte(ITE_CONFIGURATION_REGISTER) & 0x10) == 0) {
         HWSensorsFatalLog("invalid configuration register value");
         model = 0;
- 		return false;
+        return false;
     }
     
     switch (model) {
@@ -272,7 +272,7 @@ bool IT87xxSensors::initialize()
             //case IT8782E:
             //features = FEATURE_16BIT_FANS | FEATURE_TEMP_OFFSET | FEATURE_TEMP_OLD_PECI;
     }
-	
+    
 //    switch (model) {
 //        case IT8705F:
 //        case IT8721F:

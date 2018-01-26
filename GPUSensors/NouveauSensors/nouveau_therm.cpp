@@ -71,26 +71,26 @@ static u16 nvbios_therm_entry(struct nouveau_device *device, int idx, u8 *ver, u
     u16 therm = therm_table(device, ver, &hdr, len, &cnt);
     
     if (therm && idx < cnt)
-    	return therm + idx * *len;
+        return therm + idx * *len;
     
     return 0x0000;
 }
 
 static int nvbios_therm_sensor_parse(struct nouveau_device *device, nvbios_therm_sensor *sensor)
 {
-	s8 thrs_section, sensor_section, offset;
-	u8 ver, len, i;
-	u16 entry;
+    s8 thrs_section, sensor_section, offset;
+    u8 ver, len, i;
+    u16 entry;
     
     
-	/* Read the entries from the table */
-	thrs_section = 0;
-	sensor_section = -1;
-	i = 0;
-	while ((entry = nvbios_therm_entry(device, i++, &ver, &len))) {
-		s16 value = nv_ro16(device, entry + 1);
+    /* Read the entries from the table */
+    thrs_section = 0;
+    sensor_section = -1;
+    i = 0;
+    while ((entry = nvbios_therm_entry(device, i++, &ver, &len))) {
+        s16 value = nv_ro16(device, entry + 1);
         
-		switch (nv_ro08(device, entry + 0)) {
+        switch (nv_ro08(device, entry + 0)) {
             case 0x0:
                 thrs_section = value;
                 if (value > 0)
@@ -150,10 +150,10 @@ static int nvbios_therm_sensor_parse(struct nouveau_device *device, nvbios_therm
 //                    sensor->thrs_shutdown.hysteresis = value & 0xf;
 //                }
                 break;
-		}
-	}
+        }
+    }
     
-	return 0;
+    return 0;
 }
 
 void nouveau_therm_init(struct nouveau_device *device)
@@ -162,25 +162,25 @@ void nouveau_therm_init(struct nouveau_device *device)
     nvbios_therm_sensor bios_sensor;
     
     /* store some safe defaults */
-	sensor->offset_constant = 0;
-	sensor->offset_num = 0;
-	sensor->offset_den = 1;
-	sensor->slope_mult = 1;
-	sensor->slope_div = 1;
+    sensor->offset_constant = 0;
+    sensor->offset_num = 0;
+    sensor->offset_den = 1;
+    sensor->slope_mult = 1;
+    sensor->slope_div = 1;
     
-	if (!nvbios_therm_sensor_parse(device, &bios_sensor)) {
-		sensor->slope_mult = bios_sensor.slope_mult;
-		sensor->slope_div = bios_sensor.slope_div;
-		sensor->offset_num = bios_sensor.offset_num;
-		sensor->offset_den = bios_sensor.offset_den;
-		sensor->offset_constant = bios_sensor.offset_constant;
-	}
+    if (!nvbios_therm_sensor_parse(device, &bios_sensor)) {
+        sensor->slope_mult = bios_sensor.slope_mult;
+        sensor->slope_div = bios_sensor.slope_div;
+        sensor->offset_num = bios_sensor.offset_num;
+        sensor->offset_den = bios_sensor.offset_den;
+        sensor->offset_constant = bios_sensor.offset_constant;
+    }
 }
 
 int nouveau_therm_fan_pwm_get(struct nouveau_device *device)
 {
-	u32 divs, duty;
-	int ret;
+    u32 divs, duty;
+    int ret;
     
     if (device->fan_pwm.func != DCB_GPIO_UNUSED) {
         ret = device->pwm_get(device, device->fan_pwm.line, &divs, &duty);
@@ -201,10 +201,10 @@ int nouveau_therm_fan_pwm_get(struct nouveau_device *device)
 
 int nouveau_therm_fan_rpm_get(struct nouveau_device *device)
 {
-	u32 cycles, cur, prev, stop = THERM_FAN_SENSE_CYCLES * 4 + 1;
-	u64 start, interval;
+    u32 cycles, cur, prev, stop = THERM_FAN_SENSE_CYCLES * 4 + 1;
+    u64 start, interval;
 
-	if (device->fan_tach.func != DCB_GPIO_UNUSED) {
+    if (device->fan_tach.func != DCB_GPIO_UNUSED) {
         /* Time a complete rotation and extrapolate to RPM:
          * When the fan spins, it changes the value of GPIO FAN_SENSE.
          * We get 4 changes (0 -> 1 -> 0 -> 1) per complete rotation.

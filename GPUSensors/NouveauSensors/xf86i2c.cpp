@@ -15,20 +15,20 @@
 
 #include "nouveau_definitions.h"
 
-#define I2C_TIMEOUT(x, args...)	/*(x)*/  /* Report timeouts */
+#define I2C_TIMEOUT(x, args...) /*(x)*/  /* Report timeouts */
 #define I2C_TRACE(x, args...) /*(x)*/  /* Report progress */
 
 void xf86getsecs(long * secs, long * usecs)
 {
-	clock_sec_t sec;
+    clock_sec_t sec;
     clock_usec_t usec;
     
-	clock_get_system_microtime(&sec, &usec);
+    clock_get_system_microtime(&sec, &usec);
     
-	*secs = sec;
-	*usecs= usec;
+    *secs = sec;
+    *usecs= usec;
     
-	return;
+    return;
 }
 
 /* This is the default I2CUDelay function if not supplied by the driver.
@@ -42,7 +42,7 @@ void xf86getsecs(long * secs, long * usecs)
 static void
 I2CUDelay(I2CBusPtr b, int usec)
 {
-	long b_secs, b_usecs;
+    long b_secs, b_usecs;
     long a_secs, a_usecs;
     long d_secs, d_usecs;
     long diff;
@@ -249,7 +249,7 @@ I2CPutByte(I2CDevPtr d, I2CByte data)
     r = I2CRaiseSCL(b, 1, b->HoldTime);
     
     if (r) {
-    	for (i = d->AcknTimeout; i > 0; i -= b->HoldTime) {
+        for (i = d->AcknTimeout; i > 0; i -= b->HoldTime) {
             b->I2CUDelay(b, b->HoldTime);
             b->I2CGetBits(b, &scl, &sda);
             if (sda == 0) break;

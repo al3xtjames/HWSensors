@@ -38,7 +38,7 @@
 
 bool nv50_identify(struct nouveau_device *device)
 {
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0x50:
             device->cname = "G80";
             break;
@@ -84,9 +84,9 @@ bool nv50_identify(struct nouveau_device *device)
         default:
             nv_fatal(device, "unknown Tesla chipset\n");
             return false;
-	}
+    }
     
-	return true;
+    return true;
 }
 
 void nv50_init(struct nouveau_device *device)
@@ -123,24 +123,24 @@ void nv50_init(struct nouveau_device *device)
 }
 
 enum clk_src {
-	clk_src_crystal,
-	clk_src_href,
-	clk_src_hclk,
-	clk_src_hclkm3,
-	clk_src_hclkm3d2,
-	clk_src_host,
-	clk_src_nvclk,
-	clk_src_sclk,
-	clk_src_mclk,
-	clk_src_vdec,
-	clk_src_dom6
+    clk_src_crystal,
+    clk_src_href,
+    clk_src_hclk,
+    clk_src_hclkm3,
+    clk_src_hclkm3d2,
+    clk_src_host,
+    clk_src_nvclk,
+    clk_src_sclk,
+    clk_src_mclk,
+    clk_src_vdec,
+    clk_src_dom6
 };
 
 static u32 read_clk(struct nouveau_device *, enum clk_src);
 
 static u32 read_div(struct nouveau_device *device)
 {
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0x50: /* it exists, but only has bit 31, not the dividers.. */
         case 0x84:
         case 0x86:
@@ -153,16 +153,16 @@ static u32 read_div(struct nouveau_device *device)
             return nv_rd32(device, 0x004800);
         default:
             return 0x00000000;
-	}
+    }
 }
 
 static u32 read_pll_src(struct nouveau_device *device, u32 base)
 {
-	u32 coef, ref = read_clk(device, clk_src_crystal);
-	u32 rsel = nv_rd32(device, 0x00e18c);
-	int P, N, M = 0, id = 0;
+    u32 coef, ref = read_clk(device, clk_src_crystal);
+    u32 rsel = nv_rd32(device, 0x00e18c);
+    int P, N, M = 0, id = 0;
     
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0x50:
         case 0xa0:
             switch (base) {
@@ -219,18 +219,18 @@ static u32 read_pll_src(struct nouveau_device *device, u32 base)
         default:
             //BUG_ON(1);
             break;
-	}
+    }
     
-	if (M)
-		return (ref * N / M) >> P;
-	return 0;
+    if (M)
+        return (ref * N / M) >> P;
+    return 0;
 }
 
 static u32 read_pll_ref(struct nouveau_device *device, u32 base)
 {
-	u32 src, mast = nv_rd32(device, 0x00c040);
+    u32 src, mast = nv_rd32(device, 0x00c040);
     
-	switch (base) {
+    switch (base) {
         case 0x004028:
             src = !!(mast & 0x00200000);
             break;
@@ -248,51 +248,51 @@ static u32 read_pll_ref(struct nouveau_device *device, u32 base)
         default:
             nv_error(device, "bad pll 0x%06x\n", base);
             return 0;
-	}
+    }
     
-	if (src)
-		return read_clk(device, clk_src_href);
-	return read_pll_src(device, base);
+    if (src)
+        return read_clk(device, clk_src_href);
+    return read_pll_src(device, base);
 }
 
 static u32 read_pll(struct nouveau_device *device, u32 base)
 {
-	u32 mast = nv_rd32(device, 0x00c040);
-	u32 ctrl = nv_rd32(device, base + 0);
-	u32 coef = nv_rd32(device, base + 4);
-	u32 ref = read_pll_ref(device, base);
-	u32 clk = 0;
-	int N1, N2, M1, M2;
+    u32 mast = nv_rd32(device, 0x00c040);
+    u32 ctrl = nv_rd32(device, base + 0);
+    u32 coef = nv_rd32(device, base + 4);
+    u32 ref = read_pll_ref(device, base);
+    u32 clk = 0;
+    int N1, N2, M1, M2;
     
-	if (base == 0x004028 && (mast & 0x00100000)) {
-		/* wtf, appears to only disable post-divider on nva0 */
-		if (device->chipset != 0xa0)
-			return read_clk(device, clk_src_dom6);
-	}
+    if (base == 0x004028 && (mast & 0x00100000)) {
+        /* wtf, appears to only disable post-divider on nva0 */
+        if (device->chipset != 0xa0)
+            return read_clk(device, clk_src_dom6);
+    }
     
-	N2 = (coef & 0xff000000) >> 24;
-	M2 = (coef & 0x00ff0000) >> 16;
-	N1 = (coef & 0x0000ff00) >> 8;
-	M1 = (coef & 0x000000ff);
-	if ((ctrl & 0x80000000) && M1) {
-		clk = ref * N1 / M1;
-		if ((ctrl & 0x40000100) == 0x40000000) {
-			if (M2)
-				clk = clk * N2 / M2;
-			else
-				clk = 0;
-		}
-	}
+    N2 = (coef & 0xff000000) >> 24;
+    M2 = (coef & 0x00ff0000) >> 16;
+    N1 = (coef & 0x0000ff00) >> 8;
+    M1 = (coef & 0x000000ff);
+    if ((ctrl & 0x80000000) && M1) {
+        clk = ref * N1 / M1;
+        if ((ctrl & 0x40000100) == 0x40000000) {
+            if (M2)
+                clk = clk * N2 / M2;
+            else
+                clk = 0;
+        }
+    }
     
-	return clk;
+    return clk;
 }
 
 static u32 read_clk(struct nouveau_device *device, enum clk_src src)
 {
-	u32 mast = nv_rd32(device, 0x00c040);
-	u32 P = 0;
+    u32 mast = nv_rd32(device, 0x00c040);
+    u32 P = 0;
     
-	switch (src) {
+    switch (src) {
         case clk_src_crystal:
             return device->crystal;
         case clk_src_href:
@@ -410,17 +410,17 @@ static u32 read_clk(struct nouveau_device *device, enum clk_src src)
             }
         default:
             break;
-	}
+    }
     
-	nv_debug(device, "unknown clock source %d 0x%08x\n", src, mast);
-	return 0;
+    nv_debug(device, "unknown clock source %d 0x%08x\n", src, mast);
+    return 0;
 }
 
 int nv50_clocks_get(struct nouveau_device *device, u8 source)
 {
-	if (/*device->chipset == 0xaa ||*/
-	    device->chipset == 0xac)
-		return 0;
+    if (/*device->chipset == 0xaa ||*/
+        device->chipset == 0xac)
+        return 0;
     
     switch (source) {
         case nouveau_clock_core:
@@ -449,68 +449,68 @@ int nv50_clocks_get(struct nouveau_device *device, u8 source)
             return 0;
     }
     
-	return 0;
+    return 0;
 }
 
 static bool nv50_gpio_location(int line, u32 *reg, u32 *shift)
 {
-	const u32 nv50_gpio_reg[4] = { 0xe104, 0xe108, 0xe280, 0xe284 };
+    const u32 nv50_gpio_reg[4] = { 0xe104, 0xe108, 0xe280, 0xe284 };
     
-	if (line >= 32)
-		return false;
+    if (line >= 32)
+        return false;
     
-	*reg = nv50_gpio_reg[line >> 3];
-	*shift = (line & 7) << 2;
+    *reg = nv50_gpio_reg[line >> 3];
+    *shift = (line & 7) << 2;
     
-	return true;
+    return true;
 }
 
 int nv50_gpio_sense(struct nouveau_device *device, int line)
 {
-	u32 reg, shift;
+    u32 reg, shift;
     
-	if (!nv50_gpio_location(line, &reg, &shift))
-		return -EINVAL;
+    if (!nv50_gpio_location(line, &reg, &shift))
+        return -EINVAL;
     
-	return !!(nv_rd32(device, reg) & (4 << shift));
+    return !!(nv_rd32(device, reg) & (4 << shift));
 }
 
 void nv50_sensor_setup(struct nouveau_device *device)
 {
-	nv_mask(device, 0x20010, 0x40000000, 0x0);
-	IOSleep(20); /* wait for the temperature to stabilize */
+    nv_mask(device, 0x20010, 0x40000000, 0x0);
+    IOSleep(20); /* wait for the temperature to stabilize */
 }
 
 int nv50_temp_get(struct nouveau_device *device)
 {
-	struct nouveau_pm_temp_sensor_constants *sensor = &device->sensor_constants;
-	int core_temp;
+    struct nouveau_pm_temp_sensor_constants *sensor = &device->sensor_constants;
+    int core_temp;
     
-	core_temp = nv_rd32(device, 0x20014) & 0x3fff;
+    core_temp = nv_rd32(device, 0x20014) & 0x3fff;
     
-	/* if the slope or the offset is unset, do no use the sensor */
-	if (!sensor->slope_div || !sensor->slope_mult ||
-	    !sensor->offset_num || !sensor->offset_den)
-	    return -ENODEV;
+    /* if the slope or the offset is unset, do no use the sensor */
+    if (!sensor->slope_div || !sensor->slope_mult ||
+        !sensor->offset_num || !sensor->offset_den)
+        return -ENODEV;
     
-	core_temp = core_temp * sensor->slope_mult / sensor->slope_div;
-	core_temp = core_temp + sensor->offset_num / sensor->offset_den;
-	core_temp = core_temp + sensor->offset_constant - 8;
+    core_temp = core_temp * sensor->slope_mult / sensor->slope_div;
+    core_temp = core_temp + sensor->offset_num / sensor->offset_den;
+    core_temp = core_temp + sensor->offset_constant - 8;
     
-	/* reserve negative temperatures for errors */
-	if (core_temp < 0)
-		core_temp = 0;
+    /* reserve negative temperatures for errors */
+    if (core_temp < 0)
+        core_temp = 0;
     
-	return core_temp;
+    return core_temp;
 }
 
 static int pwm_info(struct nouveau_device *device, int *line, int *ctrl, int *indx)
 {
-	if (*line == 0x04) {
-		*ctrl = 0x00e100;
-		*line = 4;
-		*indx = 0;
-	} else
+    if (*line == 0x04) {
+        *ctrl = 0x00e100;
+        *line = 4;
+        *indx = 0;
+    } else
         if (*line == 0x09) {
             *ctrl = 0x00e100;
             *line = 9;
@@ -525,22 +525,22 @@ static int pwm_info(struct nouveau_device *device, int *line, int *ctrl, int *in
                 return -ENODEV;
             }
     
-	return 0;
+    return 0;
 }
 
 int nv50_fan_pwm_get(struct nouveau_device *device, int line, u32 *divs, u32 *duty)
 {
-	int ctrl, id, ret = pwm_info(device, &line, &ctrl, &id);
-	if (ret)
-		return ret;
+    int ctrl, id, ret = pwm_info(device, &line, &ctrl, &id);
+    if (ret)
+        return ret;
     
-	if (nv_rd32(device, ctrl) & (1 << line)) {
-		*divs = nv_rd32(device, 0x00e114 + (id * 8));
-		*duty = nv_rd32(device, 0x00e118 + (id * 8));
-		return 0;
-	}
+    if (nv_rd32(device, ctrl) & (1 << line)) {
+        *divs = nv_rd32(device, 0x00e114 + (id * 8));
+        *duty = nv_rd32(device, 0x00e118 + (id * 8));
+        return 0;
+    }
     
-	return -ENODEV;
+    return -ENODEV;
 }
 
 

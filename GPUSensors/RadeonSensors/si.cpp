@@ -32,25 +32,25 @@
 
 #include "si.h"
 
-#define     CG_MULT_THERMAL_STATUS		0x714
-#define		CTF_TEMP(x)					((x) << 9)
-#define		CTF_TEMP_MASK				0x0003fe00
-#define		CTF_TEMP_SHIFT				9
+#define     CG_MULT_THERMAL_STATUS      0x714
+#define     CTF_TEMP(x)                 ((x) << 9)
+#define     CTF_TEMP_MASK               0x0003fe00
+#define     CTF_TEMP_SHIFT              9
 
 /* get temperature in millidegrees */
 int si_get_temp(struct radeon_device *rdev)
 {
-	u32 temp;
-	int actual_temp = 0;
+    u32 temp;
+    int actual_temp = 0;
     
-	temp = (RREG32(CG_MULT_THERMAL_STATUS) & CTF_TEMP_MASK) >> CTF_TEMP_SHIFT;
+    temp = (RREG32(CG_MULT_THERMAL_STATUS) & CTF_TEMP_MASK) >> CTF_TEMP_SHIFT;
     
-	if (temp & 0x200)
-		actual_temp = 255;
-	else
-		actual_temp = temp & 0x1ff;
+    if (temp & 0x200)
+        actual_temp = 255;
+    else
+        actual_temp = temp & 0x1ff;
     
-	//actual_temp = (actual_temp * 1000);
+    //actual_temp = (actual_temp * 1000);
     
-	return actual_temp;
+    return actual_temp;
 }

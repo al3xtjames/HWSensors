@@ -57,8 +57,8 @@ struct LPCSensorsTachometerControl {
 #define kLPCSensorsMaxtachometerControls       16
 
 class LPCSensors : public FakeSMCPlugin {
-	OSDeclareAbstractStructors(LPCSensors)
-	
+    OSDeclareAbstractStructors(LPCSensors)
+    
 private:
     IOWorkLoop*             workloop;
     IOTimerEventSource*     timerEventSource;
@@ -73,11 +73,11 @@ private:
     IOReturn                woorkloopTimerEvent(void);
     
 protected:    
-	UInt16					address;
-	UInt8					port;
-	UInt32					model;
+    UInt16                  address;
+    UInt8                   port;
+    UInt32                  model;
     
-	const char              *modelName;
+    const char              *modelName;
     const char              *vendorName;
     
     UInt8                   gpuIndex;
@@ -93,14 +93,14 @@ protected:
     virtual UInt8           voltageSensorsLimit();
     virtual UInt8           tachometerSensorsLimit();
     
-    virtual float			readTemperature(UInt32 index);
-	virtual float			readVoltage(UInt32 index);
-	virtual float			readTachometer(UInt32 index);
+    virtual float           readTemperature(UInt32 index);
+    virtual float           readVoltage(UInt32 index);
+    virtual float           readTachometer(UInt32 index);
     
-    virtual bool			isTachometerControlable(UInt32 index);
-    virtual UInt8			readTachometerControl(UInt32 index);
-    virtual void			writeTachometerControl(UInt32 index, UInt8 percent);
-    virtual void			disableTachometerControl(UInt32 index);
+    virtual bool            isTachometerControlable(UInt32 index);
+    virtual UInt8           readTachometerControl(UInt32 index);
+    virtual void            writeTachometerControl(UInt32 index, UInt8 percent);
+    virtual void            disableTachometerControl(UInt32 index);
     
     virtual bool            willReadSensorValue(FakeSMCSensor *sensor, float *outValue);
     virtual bool            didWriteSensorValue(FakeSMCSensor *sensor, float value);
@@ -109,8 +109,8 @@ protected:
     virtual void            hasPoweredOn();
 
 public:
-	virtual bool			init(OSDictionary *properties=0);
-    virtual bool			start(IOService *provider);
+    virtual bool            init(OSDictionary *properties=0);
+    virtual bool            start(IOService *provider);
     virtual void            stop(IOService* provider);
 };
 

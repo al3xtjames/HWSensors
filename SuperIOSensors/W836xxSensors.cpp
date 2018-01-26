@@ -58,10 +58,10 @@ UInt8 W836xxSensors::readByte(UInt16 reg)
     UInt8 bank = reg >> 8;
     UInt8 regi = reg & 0xFF;
     
-	outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), WINBOND_BANK_SELECT_REGISTER);
-	outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), bank);
-	outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), regi);
-	return inb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET));
+    outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), WINBOND_BANK_SELECT_REGISTER);
+    outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), bank);
+    outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), regi);
+    return inb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET));
 }
 
 void W836xxSensors::writeByte(UInt16 reg, UInt8 value)
@@ -69,21 +69,21 @@ void W836xxSensors::writeByte(UInt16 reg, UInt8 value)
     UInt8 bank = reg >> 8;
     UInt8 regi = reg & 0xFF;
     
-	outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), WINBOND_BANK_SELECT_REGISTER);
-	outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), bank);
-	outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), regi);
-	outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), value); 
+    outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), WINBOND_BANK_SELECT_REGISTER);
+    outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), bank);
+    outb((UInt16)(address + WINBOND_ADDRESS_REGISTER_OFFSET), regi);
+    outb((UInt16)(address + WINBOND_DATA_REGISTER_OFFSET), value); 
 }
 
 inline UInt64 set_bit(UInt64 target, UInt16 bit, UInt32 value)
 {
-	if (((value & 1) == value) && bit <= 63)
-	{
-		UInt64 mask = (((UInt64)1) << bit);
-		return value > 0 ? target | mask : target & ~mask;
-	}
-	
-	return value;
+    if (((value & 1) == value) && bit <= 63)
+    {
+        UInt64 mask = (((UInt64)1) << bit);
+        return value > 0 ? target | mask : target & ~mask;
+    }
+    
+    return value;
 }
 
 UInt8 W836xxSensors::temperatureSensorsLimit()
@@ -103,14 +103,14 @@ UInt8 W836xxSensors::tachometerSensorsLimit()
 
 float W836xxSensors::readTemperature(UInt32 index)
 {
-	UInt32 value = readByte(WINBOND_TEMPERATURE[index]) << 1;
-	
-	if ((WINBOND_TEMPERATURE[index] >> 8) > 0) 
-		value |= readByte((WINBOND_TEMPERATURE[index] + 1)) >> 7;
-	
-	float temperature = (float)value / 2.0f;
-	
-	return temperature <= 125 && temperature >= -55 ? temperature : 0;
+    UInt32 value = readByte(WINBOND_TEMPERATURE[index]) << 1;
+    
+    if ((WINBOND_TEMPERATURE[index] >> 8) > 0) 
+        value |= readByte((WINBOND_TEMPERATURE[index] + 1)) >> 7;
+    
+    float temperature = (float)value / 2.0f;
+    
+    return temperature <= 125 && temperature >= -55 ? temperature : 0;
 }
 
 float W836xxSensors::readVoltage(UInt32 index)
@@ -148,78 +148,78 @@ float W836xxSensors::readVoltage(UInt32 index)
         }
         else voltage = (float)V * voltageGain;
     }
-	else {
+    else {
         // Battery voltage
         if ((readByte(0x005D) & 0x01) > 0)
             voltage = readByte(WINBOND_VOLTAGE_VBAT) * voltageGain;
     }
-	
-	return voltage;
+    
+    return voltage;
 }
 
 void W836xxSensors::updateTachometers()
 {
-	UInt64 bits = 0;
-	
-	for (int i = 0; i < 5; i++)
-	{
-		bits = (bits << 8) | readByte(WINBOND_TACHOMETER_DIVISOR[i]);
-	}
-	
-	UInt64 newBits = bits;
-	
-	for (int i = 0; i < fanLimit; i++)
-	{
-		// assemble fan divisor
-		UInt8 offset =	(((bits >> WINBOND_TACHOMETER_DIVISOR2[i]) & 1) << 2) |
-		(((bits >> WINBOND_TACHOMETER_DIVISOR1[i]) & 1) << 1) |
-		((bits >> WINBOND_TACHOMETER_DIVISOR0[i]) & 1);
-		
-		UInt8 divisor = 1 << offset;
-		UInt8 count = readByte(WINBOND_TACHOMETER[i]);
-		
-		// update fan divisor
-		if (count > 192 && offset < 7)
-		{
-			offset++;
-		}
-		else if (count < 96 && offset > 0)
-		{
-			offset--;
-		}
-		
-		fanValue[i] = (count < 0xff) ? 1.35e6f / (float(count * divisor)) : 0;
-		fanValueObsolete[i] = false;
-		
-		newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR2[i], (offset >> 2) & 1);
-		newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR1[i], (offset >> 1) & 1);
-		newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR0[i],  offset       & 1);
-	}		
-	
-	// write new fan divisors 
-	for (int i = 4; i >= 0; i--) 
-	{
-		UInt8 oldByte = bits & 0xff;
-		UInt8 newByte = newBits & 0xff;
-		
-		if (oldByte != newByte)
-		{
-			writeByte(WINBOND_TACHOMETER_DIVISOR[i], newByte);
-		}
-		
-		bits = bits >> 8;
-		newBits = newBits >> 8;
-	}
+    UInt64 bits = 0;
+    
+    for (int i = 0; i < 5; i++)
+    {
+        bits = (bits << 8) | readByte(WINBOND_TACHOMETER_DIVISOR[i]);
+    }
+    
+    UInt64 newBits = bits;
+    
+    for (int i = 0; i < fanLimit; i++)
+    {
+        // assemble fan divisor
+        UInt8 offset =  (((bits >> WINBOND_TACHOMETER_DIVISOR2[i]) & 1) << 2) |
+        (((bits >> WINBOND_TACHOMETER_DIVISOR1[i]) & 1) << 1) |
+        ((bits >> WINBOND_TACHOMETER_DIVISOR0[i]) & 1);
+        
+        UInt8 divisor = 1 << offset;
+        UInt8 count = readByte(WINBOND_TACHOMETER[i]);
+        
+        // update fan divisor
+        if (count > 192 && offset < 7)
+        {
+            offset++;
+        }
+        else if (count < 96 && offset > 0)
+        {
+            offset--;
+        }
+        
+        fanValue[i] = (count < 0xff) ? 1.35e6f / (float(count * divisor)) : 0;
+        fanValueObsolete[i] = false;
+        
+        newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR2[i], (offset >> 2) & 1);
+        newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR1[i], (offset >> 1) & 1);
+        newBits = set_bit(newBits, WINBOND_TACHOMETER_DIVISOR0[i],  offset       & 1);
+    }       
+    
+    // write new fan divisors 
+    for (int i = 4; i >= 0; i--) 
+    {
+        UInt8 oldByte = bits & 0xff;
+        UInt8 newByte = newBits & 0xff;
+        
+        if (oldByte != newByte)
+        {
+            writeByte(WINBOND_TACHOMETER_DIVISOR[i], newByte);
+        }
+        
+        bits = bits >> 8;
+        newBits = newBits >> 8;
+    }
 }
 
 float W836xxSensors::readTachometer(UInt32 index)
 {
-	if (fanValueObsolete[index])
-		updateTachometers();
-	
-	fanValueObsolete[index] = true;
-	
-	return fanValue[index];
+    if (fanValueObsolete[index])
+        updateTachometers();
+    
+    fanValueObsolete[index] = true;
+    
+    return fanValue[index];
 }
 
 bool W836xxSensors::isTachometerControlable(UInt32 index)
@@ -281,7 +281,7 @@ bool W836xxSensors::addTemperatureSensors(OSDictionary *configuration)
     int index = 0;
     
     for (int i = 0; i < temperatureSensorsLimit(); i++) 
-    {				
+    {               
         switch (model) 
         {
             case W83667HG:
@@ -314,8 +314,8 @@ bool W836xxSensors::addTachometerSensors(OSDictionary *configuration)
     
     OSNumber* fanlimit = OSDynamicCast(OSNumber, configuration->getObject("FANINLIMIT")); 
     
-	if (fanlimit && fanlimit->unsigned8BitValue() > 0)
-		fanLimit = fanlimit->unsigned8BitValue();
+    if (fanlimit && fanlimit->unsigned8BitValue() > 0)
+        fanLimit = fanlimit->unsigned8BitValue();
     
     // Be sure readTachometer will report correct values 
     updateTachometers();
@@ -359,5 +359,5 @@ bool W836xxSensors::initialize()
             break;
     }
     
-	return true;
+    return true;
 }

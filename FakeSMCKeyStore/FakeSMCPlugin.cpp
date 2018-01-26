@@ -305,7 +305,7 @@ FakeSMCSensor *FakeSMCPlugin::addSensorForKey(const char *key, const char *type,
 
     unlockAccessForPlugins();
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -469,7 +469,7 @@ FakeSMCSensor *FakeSMCPlugin::addTachometer(UInt32 index, const char *name, FanT
 
     unlockAccessForPlugins();
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -481,7 +481,7 @@ FakeSMCSensor *FakeSMCPlugin::addTachometer(UInt32 index, const char *name, FanT
  */
 FakeSMCSensor *FakeSMCPlugin::getSensor(const char* key)
 {
-	return OSDynamicCast(FakeSMCSensor, sensors->getObject(key));
+    return OSDynamicCast(FakeSMCSensor, sensors->getObject(key));
 }
 
 /**
@@ -739,7 +739,7 @@ bool FakeSMCPlugin::init(OSDictionary *properties)
     if (!sensors)
         return false;
 
-	return true;
+    return true;
 }
 
 IOReturn FakeSMCPlugin::setPowerState(unsigned long powerState, IOService *device)
@@ -768,7 +768,7 @@ IOReturn FakeSMCPlugin::setPowerState(unsigned long powerState, IOService *devic
  */
 bool FakeSMCPlugin::start(IOService *provider)
 {
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
 
     if (OSDictionary *matching = serviceMatching(kFakeSMCKeyStoreService)) {
@@ -780,12 +780,12 @@ bool FakeSMCPlugin::start(IOService *provider)
         OSSafeReleaseNULL(matching);
     }
 
-	return true;
+    return true;
 }
 
 inline UInt8 index_of_hex_char(char c)
 {
-	return c > 96 && c < 103 ? c - 87 : c > 47 && c < 58 ? c - 48 : 0;
+    return c > 96 && c < 103 ? c - 87 : c > 47 && c < 58 ? c - 48 : 0;
 }
 
 /**
@@ -823,7 +823,7 @@ void FakeSMCPlugin::stop(IOService* provider)
 
     sensors->flushCollection();
     
-	super::stop(provider);
+    super::stop(provider);
     
     unlockAccessForPlugins();
 }
@@ -836,7 +836,7 @@ void FakeSMCPlugin::free()
 {
     HWSensorsDebugLog("freenig sensors collection");
     OSSafeReleaseNULL(sensors);
-	super::free();
+    super::free();
 }
 
 /**

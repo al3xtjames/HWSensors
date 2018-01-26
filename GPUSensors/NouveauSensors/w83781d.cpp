@@ -21,63 +21,63 @@
 /* This function should return the chip type .. */
 int w83781d_detect(I2CDevPtr dev)
 {
-	I2CByte man_id, chip_id;
+    I2CByte man_id, chip_id;
 
-	xf86I2CReadByte  (dev, W83781D_REG_MAN_ID, &man_id); 
-	xf86I2CReadByte  (dev, W83781D_REG_CHIP_ID, &chip_id); 
+    xf86I2CReadByte  (dev, W83781D_REG_MAN_ID, &man_id); 
+    xf86I2CReadByte  (dev, W83781D_REG_CHIP_ID, &chip_id); 
 
-	switch(man_id)
-	{
-		case ASUS_MAN_ID:
-		case W83781D_MAN_ID:
-		/* We still need a chip_id check (0x11 for w83781d) */
-			dev->chip_id = W83781D;
-			dev->chip_name = (char*)STRDUP("Winbond W83781D", sizeof("Winbond W83781D"));
-			break;
-		default:
-			//IOLog("Uknown Winbond vendor: %x\n", man_id);
-			return 0;
-	}
-	return 1;
+    switch(man_id)
+    {
+        case ASUS_MAN_ID:
+        case W83781D_MAN_ID:
+        /* We still need a chip_id check (0x11 for w83781d) */
+            dev->chip_id = W83781D;
+            dev->chip_name = (char*)STRDUP("Winbond W83781D", sizeof("Winbond W83781D"));
+            break;
+        default:
+            //IOLog("Uknown Winbond vendor: %x\n", man_id);
+            return 0;
+    }
+    return 1;
 }
 
 int w83781d_get_board_temp(nouveau_device *device)
 {
-	I2CByte temp;
-	xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_LOCAL_TEMP, &temp);
-	return temp;
+    I2CByte temp;
+    xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_LOCAL_TEMP, &temp);
+    return temp;
 }
 
 /* only one temperature exists ... */
 int w83781d_get_gpu_temp(nouveau_device *device)
 {
-	I2CByte temp;
-	xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_REMOTE_TEMP, &temp);
-	return temp;
+    I2CByte temp;
+    xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_REMOTE_TEMP, &temp);
+    return temp;
 }
 
 int w83781d_get_fanspeed_rpm(nouveau_device *device)
 {
-	I2CByte count, divisor;
+    I2CByte count, divisor;
 
-	xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_FAN1_COUNT, &count);
-	xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_FAN_DIVISOR, &divisor);
-	divisor = 1 << ((divisor >> 4) & 0x3); /* bit 5:4 are for fan1; a value of 0 means a divider of 1, while 2 means 2^3 = 8 */
-	
-	/* A count of 0xff indicates that something is wrong i.e. no fan is connected */
-	if(count == 0xff)
-		return 0;
-	
-	return 1350000/(count * divisor);
+    xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_FAN1_COUNT, &count);
+    xf86I2CReadByte(device->nvclock_i2c_sensor, W83781D_REG_FAN_DIVISOR, &divisor);
+    divisor = 1 << ((divisor >> 4) & 0x3); /* bit 5:4 are for fan1; a value of 0 means a divider of 1, while 2 means 2^3 = 8 */
+    
+    /* A count of 0xff indicates that something is wrong i.e. no fan is connected */
+    if(count == 0xff)
+        return 0;
+    
+    return 1350000/(count * divisor);
 }
 
 //int w83781d_get_fanspeed_pwm(nouveau_device *device)
 //{
-//	return 0;
+//  return 0;
 //}
 
 //int w83781d_set_fanspeed_pwm(I2CDevPtr dev, float speed)
 //{
-//	return 0;
+//  return 0;
 //}
 

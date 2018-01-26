@@ -34,22 +34,22 @@ class FakeSMCKeyStore;
 
 class FakeSMCKeyStoreUserClient : public IOUserClient
 {
-	OSDeclareDefaultStructors(FakeSMCKeyStoreUserClient);
+    OSDeclareDefaultStructors(FakeSMCKeyStoreUserClient);
 
 private:
-	FakeSMCKeyStore *keyStore;
+    FakeSMCKeyStore *keyStore;
     bool clientHasAdminPrivilegue;
 
 public:
-	/* IOService overrides */
-	virtual bool start(IOService* provider);
-	virtual void stop(IOService* provider);
+    /* IOService overrides */
+    virtual bool start(IOService* provider);
+    virtual void stop(IOService* provider);
 
-	/* IOUserClient overrides */
-	virtual bool initWithTask(task_t task, void* securityID, UInt32 type,  OSDictionary* properties);
-	virtual IOReturn clientClose(void);
-	virtual IOReturn externalMethod(uint32_t selector, IOExternalMethodArguments* arguments,
-									IOExternalMethodDispatch* dispatch, OSObject* target, void* reference);
+    /* IOUserClient overrides */
+    virtual bool initWithTask(task_t task, void* securityID, UInt32 type,  OSDictionary* properties);
+    virtual IOReturn clientClose(void);
+    virtual IOReturn externalMethod(uint32_t selector, IOExternalMethodArguments* arguments,
+                                    IOExternalMethodDispatch* dispatch, OSObject* target, void* reference);
 };
 
 #endif /* defined(__HWSensors__FakeSMCKeyStoreUserClient__) */

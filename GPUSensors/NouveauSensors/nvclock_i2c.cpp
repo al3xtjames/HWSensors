@@ -100,85 +100,85 @@
 
 void nvclock_i2c_lock_unlock(nouveau_device *device, int lock)
 {
-	unsigned char cr11;
+    unsigned char cr11;
     volatile unsigned char *PCIO = (volatile unsigned char*)(device->mmio->getVirtualAddress() + 0x00601000);
     
     PCIO[0x3d4] = 0x1f;
-	PCIO[0x3d5] = lock ? 0x99 : 0x57;
+    PCIO[0x3d5] = lock ? 0x99 : 0x57;
     
-	PCIO[0x3d4] = 0x11;
-	cr11 = PCIO[0x3d5];
-	if(lock) cr11 |= 0x80;
-	else cr11 &= ~0x80;
-	PCIO[0x3d5] = cr11;
+    PCIO[0x3d4] = 0x11;
+    cr11 = PCIO[0x3d5];
+    if(lock) cr11 |= 0x80;
+    else cr11 &= ~0x80;
+    PCIO[0x3d5] = cr11;
 }
 
 
 void nvclock_i2c_get_bits(I2CBusPtr b, int *clock, int *data)
 {
-	unsigned char val;
-	int DDCBase = (int)b->DriverPrivate.val;
+    unsigned char val;
+    int DDCBase = (int)b->DriverPrivate.val;
     volatile unsigned char *PCIO = (volatile unsigned char*)(b->card->mmio->getVirtualAddress() + 0x00601000);
     
-	/* Get the result. */
-	PCIO[0x3d4] = DDCBase;
-	val = PCIO[0x3d5];
+    /* Get the result. */
+    PCIO[0x3d4] = DDCBase;
+    val = PCIO[0x3d5];
     
-	*clock = (val & DDC_SCL_READ_MASK) != 0;
-	*data  = (val & DDC_SDA_READ_MASK) != 0;
+    *clock = (val & DDC_SCL_READ_MASK) != 0;
+    *data  = (val & DDC_SDA_READ_MASK) != 0;
 }
 
 void nvclock_i2c_put_bits(I2CBusPtr b, int clock, int data)
 {
-	unsigned char val;
-	int DDCBase = (int)b->DriverPrivate.val;
+    unsigned char val;
+    int DDCBase = (int)b->DriverPrivate.val;
     volatile unsigned char *PCIO = (volatile unsigned char*)(b->card->mmio->getVirtualAddress() + 0x00601000);
     
-	PCIO[0x3d4] = DDCBase + 1;
-	val = PCIO[0x3d5] & 0xf0;
-	if (clock)
-		val |= DDC_SCL_WRITE_MASK;
-	else
-		val &= ~DDC_SCL_WRITE_MASK;
+    PCIO[0x3d4] = DDCBase + 1;
+    val = PCIO[0x3d5] & 0xf0;
+    if (clock)
+        val |= DDC_SCL_WRITE_MASK;
+    else
+        val &= ~DDC_SCL_WRITE_MASK;
     
-	if (data)
-		val |= DDC_SDA_WRITE_MASK;
-	else
-		val &= ~DDC_SDA_WRITE_MASK;
+    if (data)
+        val |= DDC_SDA_WRITE_MASK;
+    else
+        val &= ~DDC_SDA_WRITE_MASK;
     
-	PCIO[0x3d4] = DDCBase + 1;
-	PCIO[0x3d5] = val | 0x1;
+    PCIO[0x3d4] = DDCBase + 1;
+    PCIO[0x3d5] = val | 0x1;
 }
 
 void nvclock_nv50_i2c_get_bits(I2CBusPtr bus, int *clock, int *data)
 {
-	const long offset = bus->DriverPrivate.val;
+    const long offset = bus->DriverPrivate.val;
     volatile unsigned int *PMC = (volatile unsigned int*)bus->card->mmio->getVirtualAddress();
     
     unsigned char val = PMC[offset/4];
     
-	*clock = !!(val & 1);
-	*data = !!(val & 2);
+    *clock = !!(val & 1);
+    *data = !!(val & 2);
 }
 
 void nvclock_nv50_i2c_put_bits(I2CBusPtr bus, int clock, int data)
 {
-	const long offset = bus->DriverPrivate.val;
+    const long offset = bus->DriverPrivate.val;
     volatile unsigned int *PMC = (volatile unsigned int*)bus->card->mmio->getVirtualAddress();
     
-	PMC[offset/4] = 4 | clock | data << 1;
+    PMC[offset/4] = 4 | clock | data << 1;
 }
 
 I2CBusPtr nvclock_i2c_create_bus_ptr(nouveau_device *device, char *name, int bus)
 {
-	I2CBusPtr I2CPtr;
+    I2CBusPtr I2CPtr;
     
-	I2CPtr = xf86CreateI2CBusRec();
-	if(!I2CPtr) return NULL;
+    I2CPtr = xf86CreateI2CBusRec();
+    if(!I2CPtr) return NULL;
     
-	I2CPtr->BusName    = name;
-	I2CPtr->scrnIndex  = device->card_index; /* We need to use unique indices or else it can lead to a segfault in multicard situations */
-	I2CPtr->I2CAddress = I2CAddress;
+    I2CPtr->BusName    = name;
+    I2CPtr->scrnIndex  = device->card_index; /* We need to use unique indices or else it can lead to a segfault in multicard situations */
+    I2CPtr->I2CAddress = I2CAddress;
     
     if (device->card_type < NV_50) {
         I2CPtr->I2CPutBits = nvclock_i2c_put_bits;
@@ -190,115 +190,115 @@ I2CBusPtr nvclock_i2c_create_bus_ptr(nouveau_device *device, char *name, int bus
         I2CPtr->I2CGetBits = nvclock_nv50_i2c_get_bits;
         I2CPtr->AcknTimeout = 40;
     }
-	I2CPtr->DriverPrivate.val = bus;
+    I2CPtr->DriverPrivate.val = bus;
     I2CPtr->card = device;
     
-	if (!xf86I2CBusInit(I2CPtr))
-		return 0;
+    if (!xf86I2CBusInit(I2CPtr))
+        return 0;
 
-	return I2CPtr;
+    return I2CPtr;
 }
 
 I2CDevPtr nvclock_i2c_probe_device(I2CBusPtr bus, I2CSlaveAddr addr, const char *format, ...)
 {
-	I2CDevPtr dev;
-	char *s;
-	va_list ap;
+    I2CDevPtr dev;
+    char *s;
+    va_list ap;
     
-	if(xf86I2CProbeAddress(bus, addr))
-	{
-		dev = xf86CreateI2CDevRec();
-		s = (char*)IOMalloc(8);
-		va_start (ap, format);
-		vsnprintf (s, 7, format, ap);
-		va_end (ap);
-		dev->DevName = s;
-		dev->SlaveAddr = addr;
-		dev->pI2CBus = bus;
+    if(xf86I2CProbeAddress(bus, addr))
+    {
+        dev = xf86CreateI2CDevRec();
+        s = (char*)IOMalloc(8);
+        va_start (ap, format);
+        vsnprintf (s, 7, format, ap);
+        va_end (ap);
+        dev->DevName = s;
+        dev->SlaveAddr = addr;
+        dev->pI2CBus = bus;
         
-		if (!xf86I2CDevInit(dev))
-		{
-			IOFree(dev->DevName, 8);
-			xf86DestroyI2CDevRec(dev, TRUE);
+        if (!xf86I2CDevInit(dev))
+        {
+            IOFree(dev->DevName, 8);
+            xf86DestroyI2CDevRec(dev, TRUE);
             
             return NULL;
-		}
+        }
         
         return dev;
-	}
+    }
     
     return NULL;
 }
 
 void nvclock_i2c_probe_all_devices(I2CBusPtr busses[], int nbus)
 {
-	I2CSlaveAddr addr;
-	int bus;
-	for (bus = 0; bus < nbus; bus++)
-	{
-		for (addr = 0x00; addr < 0x100; addr += 2)
-		{
-			nvclock_i2c_probe_device(busses[bus], addr, "%1i:%02X", bus, addr);
-		}
-	}
+    I2CSlaveAddr addr;
+    int bus;
+    for (bus = 0; bus < nbus; bus++)
+    {
+        for (addr = 0x00; addr < 0x100; addr += 2)
+        {
+            nvclock_i2c_probe_device(busses[bus], addr, "%1i:%02X", bus, addr);
+        }
+    }
 }
 
 I2CDevPtr nvclock_i2c_probe_devices(nouveau_device *device, I2CBusPtr busses[], int num_busses)
 {
-	int bus;
-	I2CDevPtr dev;
+    int bus;
+    I2CDevPtr dev;
     
     nv_debug(device, "probing I2C busses...\n");
     
-	/* Unlock the extended CRTC registers to get i2c working */
-	nvclock_i2c_lock_unlock(device, 0);
+    /* Unlock the extended CRTC registers to get i2c working */
+    nvclock_i2c_lock_unlock(device, 0);
     
-	/* On NV40 cards the i2c busses can be disabled */
-	if(device->card_type == NV_40)
-	{
+    /* On NV40 cards the i2c busses can be disabled */
+    if(device->card_type == NV_40)
+    {
         volatile unsigned char *PCIO = (volatile unsigned char*)(device->mmio->getVirtualAddress() + 0x00601000);
         PCIO[0x3d4] = 0x49;
         PCIO[0x3d5] |= 0x4; /* Unlock the i2c busses */
-	}
+    }
     
-	nvclock_i2c_probe_all_devices(busses, num_busses);
+    nvclock_i2c_probe_all_devices(busses, num_busses);
     
-	for(bus = 0; bus < num_busses; bus++)
-	{
-		for(dev = busses[bus]->FirstDev; dev; dev = dev->NextDev)
-		{
-			nv_debug(dev->pI2CBus->card, "got response on bus:%s port:0x%x\n", busses[bus]->BusName, dev->SlaveAddr / 2);
+    for(bus = 0; bus < num_busses; bus++)
+    {
+        for(dev = busses[bus]->FirstDev; dev; dev = dev->NextDev)
+        {
+            nv_debug(dev->pI2CBus->card, "got response on bus:%s port:0x%x\n", busses[bus]->BusName, dev->SlaveAddr / 2);
             
-			dev->arch = dev->pI2CBus->card->chipset;
+            dev->arch = dev->pI2CBus->card->chipset;
                            
-			switch(dev->SlaveAddr / 2)
-			{
+            switch(dev->SlaveAddr / 2)
+            {
                 case 0x2d:
-					if(w83l785r_detect(dev))
-						return dev;
-					if(w83781d_detect(dev))
-						return dev;
+                    if(w83l785r_detect(dev))
+                        return dev;
+                    if(w83781d_detect(dev))
+                        return dev;
                     break;
-				case 0x2e:
-					if(f75375_detect(dev))
-						return dev;
-					if(adt7473_detect(dev))
-						return dev;
+                case 0x2e:
+                    if(f75375_detect(dev))
+                        return dev;
+                    if(adt7473_detect(dev))
+                        return dev;
                     break;
                 case 0x4c:
-					if(lm99_detect(dev))
-						return dev;
+                    if(lm99_detect(dev))
+                        return dev;
                     break;
-				default:
+                default:
                     /* Unknown device */
-					break;
-			}
-		}
-	}
+                    break;
+            }
+        }
+    }
     
-	nvclock_i2c_lock_unlock(device, 1);
+    nvclock_i2c_lock_unlock(device, 1);
     
-	return NULL;
+    return NULL;
 }
 
 bool nvclock_i2c_sensor_init(nouveau_device *device)

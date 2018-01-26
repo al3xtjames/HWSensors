@@ -41,7 +41,7 @@
 
 bool nve0_identify(struct nouveau_device *device)
 {
-	switch (device->chipset) {
+    switch (device->chipset) {
         case 0xe4:
             device->cname = "GK104";
             break;
@@ -63,9 +63,9 @@ bool nve0_identify(struct nouveau_device *device)
         default:
             nv_fatal(device, "unknown Kepler chipset 0x%x\n", device->chipset);
             return false;
-	}
+    }
     
-	return true;
+    return true;
 }
 
 void nve0_init(struct nouveau_device *device)
@@ -89,26 +89,26 @@ static u32 read_pll(struct nouveau_device *, u32);
 
 static u32 read_vco(struct nouveau_device *device, u32 dsrc)
 {
-	u32 ssrc = nv_rd32(device, dsrc);
-	if (!(ssrc & 0x00000100))
-		return read_pll(device, 0x00e800);
-	return read_pll(device, 0x00e820);
+    u32 ssrc = nv_rd32(device, dsrc);
+    if (!(ssrc & 0x00000100))
+        return read_pll(device, 0x00e800);
+    return read_pll(device, 0x00e820);
 }
 
 static u32 read_pll(struct nouveau_device *device, u32 pll)
 {
-	u32 ctrl = nv_rd32(device, pll + 0x00);
-	u32 coef = nv_rd32(device, pll + 0x04);
-	u32 P = (coef & 0x003f0000) >> 16;
-	u32 N = (coef & 0x0000ff00) >> 8;
-	u32 M = (coef & 0x000000ff) >> 0;
-	u32 sclk;
-	u16 fN = 0xf000;
+    u32 ctrl = nv_rd32(device, pll + 0x00);
+    u32 coef = nv_rd32(device, pll + 0x04);
+    u32 P = (coef & 0x003f0000) >> 16;
+    u32 N = (coef & 0x0000ff00) >> 8;
+    u32 M = (coef & 0x000000ff) >> 0;
+    u32 sclk;
+    u16 fN = 0xf000;
     
-	if (!(ctrl & 0x00000001))
-		return 0;
+    if (!(ctrl & 0x00000001))
+        return 0;
     
-	switch (pll) {
+    switch (pll) {
         case 0x00e800:
         case 0x00e820:
             sclk = device->crystal;
@@ -130,21 +130,21 @@ static u32 read_pll(struct nouveau_device *device, u32 pll)
             break;
         default:
             return 0;
-	}
+    }
     
-	if (P == 0)
-		P = 1;
+    if (P == 0)
+        P = 1;
     
-	sclk = (sclk * N) + (((u16)(fN + 4096) * sclk) >> 13);
-	return sclk / (M * P);
+    sclk = (sclk * N) + (((u16)(fN + 4096) * sclk) >> 13);
+    return sclk / (M * P);
 }
 
 static u32 read_div(struct nouveau_device *device, int doff, u32 dsrc, u32 dctl)
 {
-	u32 ssrc = nv_rd32(device, dsrc + (doff * 4));
-	u32 sctl = nv_rd32(device, dctl + (doff * 4));
+    u32 ssrc = nv_rd32(device, dsrc + (doff * 4));
+    u32 sctl = nv_rd32(device, dctl + (doff * 4));
     
-	switch (ssrc & 0x00000003) {
+    switch (ssrc & 0x00000003) {
         case 0:
             if ((ssrc & 0x00030000) != 0x00030000)
                 return device->crystal;
@@ -161,64 +161,64 @@ static u32 read_div(struct nouveau_device *device, int doff, u32 dsrc, u32 dctl)
             return read_vco(device, dsrc + (doff * 4));
         default:
             return 0;
-	}
+    }
 }
 
 static u32 read_mem(struct nouveau_device *device)
 {
-	switch (nv_rd32(device, 0x1373f4) & 0x0000000f) {
+    switch (nv_rd32(device, 0x1373f4) & 0x0000000f) {
         case 1: return read_pll(device, 0x132020);
         case 2: return read_pll(device, 0x132000);
         default:
             return 0;
-	}
+    }
 }
 
 static u32 read_clk(struct nouveau_device *device, int clk)
 {
-	u32 sctl = nv_rd32(device, 0x137250 + (clk * 4));
-	u32 sclk, sdiv;
+    u32 sctl = nv_rd32(device, 0x137250 + (clk * 4));
+    u32 sclk, sdiv;
     
-	if (clk < 7) {
-		u32 ssel = nv_rd32(device, 0x137100);
-		if (ssel & (1 << clk)) {
-			sclk = read_pll(device, 0x137000 + (clk * 0x20));
-			sdiv = 1;
-		} else {
-			sclk = read_div(device, clk, 0x137160, 0x1371d0);
-			sdiv = 0;
-		}
-	} else {
-		u32 ssrc = nv_rd32(device, 0x137160 + (clk * 0x04));
-		if ((ssrc & 0x00000003) == 0x00000003) {
-			sclk = read_div(device, clk, 0x137160, 0x1371d0);
-			if (ssrc & 0x00000100) {
-				if (ssrc & 0x40000000)
-					sclk = read_pll(device, 0x1370e0);
-				sdiv = 1;
-			} else {
-				sdiv = 0;
-			}
-		} else {
-			sclk = read_div(device, clk, 0x137160, 0x1371d0);
-			sdiv = 0;
-		}
-	}
+    if (clk < 7) {
+        u32 ssel = nv_rd32(device, 0x137100);
+        if (ssel & (1 << clk)) {
+            sclk = read_pll(device, 0x137000 + (clk * 0x20));
+            sdiv = 1;
+        } else {
+            sclk = read_div(device, clk, 0x137160, 0x1371d0);
+            sdiv = 0;
+        }
+    } else {
+        u32 ssrc = nv_rd32(device, 0x137160 + (clk * 0x04));
+        if ((ssrc & 0x00000003) == 0x00000003) {
+            sclk = read_div(device, clk, 0x137160, 0x1371d0);
+            if (ssrc & 0x00000100) {
+                if (ssrc & 0x40000000)
+                    sclk = read_pll(device, 0x1370e0);
+                sdiv = 1;
+            } else {
+                sdiv = 0;
+            }
+        } else {
+            sclk = read_div(device, clk, 0x137160, 0x1371d0);
+            sdiv = 0;
+        }
+    }
     
-	if (sctl & 0x80000000) {
-		if (sdiv)
-			sdiv = ((sctl & 0x00003f00) >> 8) + 2;
-		else
-			sdiv = ((sctl & 0x0000003f) >> 0) + 2;
-		return (sclk * 2) / sdiv;
-	}
+    if (sctl & 0x80000000) {
+        if (sdiv)
+            sdiv = ((sctl & 0x00003f00) >> 8) + 2;
+        else
+            sdiv = ((sctl & 0x0000003f) >> 0) + 2;
+        return (sclk * 2) / sdiv;
+    }
     
-	return sclk;
+    return sclk;
 }
 
 int nve0_clock_read(struct nouveau_device *device, u8 source)
 {
-	switch (source) {
+    switch (source) {
         case nouveau_clock_memory:
             return read_mem(device) * 2;
         case nouveau_clock_core:
@@ -235,7 +235,7 @@ int nve0_clock_read(struct nouveau_device *device, u8 source)
 //            return read_clk(device, 0x0c);
 //        case nv_clk_src_vdec:
 //            return read_clk(device, 0x0e);
-	}
+    }
     
     return 0;
 }

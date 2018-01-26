@@ -14,16 +14,16 @@
 class RadeonSensors : public GPUSensors
 {
     OSDeclareDefaultStructors(RadeonSensors)    
-	
+    
 private:
     radeon_device       card;
     
-protected:	
+protected:  
     virtual bool        willReadSensorValue(FakeSMCSensor *sensor, float* value);
     virtual bool        shouldWaitForAccelerator();
     virtual bool        probIsAcceleratorAlreadyLoaded();
-	virtual bool        managedStart(IOService *provider);
+    virtual bool        managedStart(IOService *provider);
     
 public:
-    virtual void		stop(IOService *provider);
+    virtual void        stop(IOService *provider);
 };

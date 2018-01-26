@@ -22,27 +22,27 @@
 struct nouveau_i2c;
 
 struct nouveau_i2c_port {
-	struct i2c_adapter adapter;
-	struct nouveau_i2c *i2c;
-	struct i2c_algo_bit_data bit;
-	struct list_head head;
-	u8  index;
-	u8  type;
-	u32 dcb;
-	u32 drive;
-	u32 sense;
-	u32 state;
+    struct i2c_adapter adapter;
+    struct nouveau_i2c *i2c;
+    struct i2c_algo_bit_data bit;
+    struct list_head head;
+    u8  index;
+    u8  type;
+    u32 dcb;
+    u32 drive;
+    u32 sense;
+    u32 state;
 };
 
 struct nouveau_i2c {
     struct nouveau_device *device;
     
-	struct nouveau_i2c_port *(*find)(struct nouveau_i2c *, u8 index);
-	int (*identify)(struct nouveau_i2c *, int index,
+    struct nouveau_i2c_port *(*find)(struct nouveau_i2c *, u8 index);
+    int (*identify)(struct nouveau_i2c *, int index,
                     const char *what, struct i2c_board_info *,
                     bool (*match)(struct nouveau_i2c_port *,
                                   struct i2c_board_info *));
-	struct list_head ports;
+    struct list_head ports;
 };
 
 struct nouveau_i2c_port *nouveau_i2c_find(struct nouveau_i2c *i2c, u8 index);

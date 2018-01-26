@@ -49,13 +49,13 @@ void nvd0_therm_init(struct nouveau_device *device)
 
 int nvd0_gpio_sense(struct nouveau_device *device, int line)
 {
-	return !!(nv_rd32(device, 0x00d610 + (line * 4)) & 0x00004000);
+    return !!(nv_rd32(device, 0x00d610 + (line * 4)) & 0x00004000);
 }
 
 static int pwm_info(struct nouveau_device *device, int line)
 {
-	u32 gpio = nv_rd32(device, 0x00d610 + (line * 0x04));
-	switch (gpio & 0x000000c0) {
+    u32 gpio = nv_rd32(device, 0x00d610 + (line * 0x04));
+    switch (gpio & 0x000000c0) {
         case 0x00000000: /* normal mode, possibly pwm forced off by us */
         case 0x00000040: /* nvio special */
             switch (gpio & 0x0000001f) {
@@ -67,30 +67,30 @@ static int pwm_info(struct nouveau_device *device, int line)
             }
         default:
             break;
-	}
+    }
     
-	nv_debug(device, "GPIO %d unknown PWM: 0x%08x\n", line, gpio);
+    nv_debug(device, "GPIO %d unknown PWM: 0x%08x\n", line, gpio);
     
-	return -ENODEV;
+    return -ENODEV;
 }
 
 int nvd0_fan_pwm_get(struct nouveau_device *device, int line, u32 *divs, u32 *duty)
 {
-	int indx = pwm_info(device, line);
+    int indx = pwm_info(device, line);
     
-	if (indx < 0) {
-		return indx;
+    if (indx < 0) {
+        return indx;
     } else if (indx < 2) {
-		if (nv_rd32(device, 0x00d610 + (line * 0x04)) & 0x00000040) {
-			*divs = nv_rd32(device, 0x00e114 + (indx * 8));
-			*duty = nv_rd32(device, 0x00e118 + (indx * 8));
-			return 0;
-		}
-	} else if (indx == 2) {
-		*divs = nv_rd32(device, 0x0200d8) & 0x1fff;
-		*duty = nv_rd32(device, 0x0200dc) & 0x1fff;
-		return 0;
-	}
+        if (nv_rd32(device, 0x00d610 + (line * 0x04)) & 0x00000040) {
+            *divs = nv_rd32(device, 0x00e114 + (indx * 8));
+            *duty = nv_rd32(device, 0x00e118 + (indx * 8));
+            return 0;
+        }
+    } else if (indx == 2) {
+        *divs = nv_rd32(device, 0x0200d8) & 0x1fff;
+        *duty = nv_rd32(device, 0x0200dc) & 0x1fff;
+        return 0;
+    }
     
-	return -EINVAL;
+    return -EINVAL;
 }

@@ -39,11 +39,11 @@
 
 int nv10_gpio_sense(struct nouveau_device *device, int line)
 {
-	if (line < 2) {
-		line = line * 16;
-		line = nv_rd32(device, 0x00600818) >> line;
-		return !!(line & 0x0100);
-	} else
+    if (line < 2) {
+        line = line * 16;
+        line = nv_rd32(device, 0x00600818) >> line;
+        return !!(line & 0x0100);
+    } else
         if (line < 10) {
             line = (line - 2) * 4;
             line = nv_rd32(device, 0x0060081c) >> line;
@@ -55,5 +55,5 @@ int nv10_gpio_sense(struct nouveau_device *device, int line)
                 return !!(line & 0x04);
             }
     
-	return -EINVAL;
+    return -EINVAL;
 }

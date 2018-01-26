@@ -55,30 +55,30 @@ OSDefineMetaClassAndStructors(F718xxSensors, LPCSensors)
 
 UInt8 F718xxSensors::readByte(UInt8 reg) 
 {
-	outb(address + FINTEK_ADDRESS_REGISTER_OFFSET, reg);
-	return inb(address + FINTEK_DATA_REGISTER_OFFSET);
+    outb(address + FINTEK_ADDRESS_REGISTER_OFFSET, reg);
+    return inb(address + FINTEK_DATA_REGISTER_OFFSET);
 } 
 
 UInt8 F718xxSensors::temperatureSensorsLimit()
 {
     switch (model)
-	{
+    {
         case F71808E:
-			return 2;
+            return 2;
         default:
-			return 3 + sizeof(FINTEK_TEMPERATURE_EXT_REG);
-	};
+            return 3 + sizeof(FINTEK_TEMPERATURE_EXT_REG);
+    };
 }
 
 UInt8 F718xxSensors::voltageSensorsLimit()
 {
     switch (model) 
-	{
+    {
         case F71858:
-			return 0;
+            return 0;
         default:
-			return 9;
-	};
+            return 9;
+    };
 }
 
 UInt8 F718xxSensors::tachometerSensorsLimit()
@@ -88,8 +88,8 @@ UInt8 F718xxSensors::tachometerSensorsLimit()
 
 float F718xxSensors::readTemperature(UInt32 index)
 {
-	if (model == F71858) 
-	{
+    if (model == F71858) 
+    {
         int tableMode = 0x3 & readByte(FINTEK_TEMPERATURE_CONFIG_REG);
         int high = readByte(FINTEK_TEMPERATURE_BASE_REG + 2 * index);
         int low = readByte(FINTEK_TEMPERATURE_BASE_REG + 2 * index + 1);      
@@ -114,7 +114,7 @@ float F718xxSensors::readTemperature(UInt32 index)
         } 
         
         return 0;
-	}
+    }
     
     SInt8 value = 0;
     
@@ -124,8 +124,8 @@ float F718xxSensors::readTemperature(UInt32 index)
     else {
         value = readByte(FINTEK_TEMPERATURE_EXT_REG[index - 3]);
     }
-	
-	return value < 0 ? -value : value;
+    
+    return value < 0 ? -value : value;
 }
 
 float F718xxSensors::readVoltage(UInt32 index)
@@ -135,18 +135,18 @@ float F718xxSensors::readVoltage(UInt32 index)
         return 0;
     
     return (float)(readByte(FINTEK_VOLTAGE_BASE_REG + index)) * 0.008f;
-	//return (index == 1 ? 0.5f : 1.0f) * (readByte(FINTEK_VOLTAGE_BASE_REG + index) << 4) * 0.001f;
+    //return (index == 1 ? 0.5f : 1.0f) * (readByte(FINTEK_VOLTAGE_BASE_REG + index) << 4) * 0.001f;
 }
 
 float F718xxSensors::readTachometer(UInt32 index)
 {
-	SInt32 value = readByte(FINTEK_FAN_TACHOMETER_REG[index]) << 8;
-	value |= readByte(FINTEK_FAN_TACHOMETER_REG[index] + 1);
-	
-	if (value > 0)
-		value = (value < 0x0fff) ? 1.5e6f / (float)value : 0;
-	
-	return value;
+    SInt32 value = readByte(FINTEK_FAN_TACHOMETER_REG[index]) << 8;
+    value |= readByte(FINTEK_FAN_TACHOMETER_REG[index] + 1);
+    
+    if (value > 0)
+        value = (value < 0x0fff) ? 1.5e6f / (float)value : 0;
+    
+    return value;
 }
 
 bool F718xxSensors::initialize()
@@ -166,6 +166,6 @@ bool F718xxSensors::initialize()
         HWSensorsFatalLog("wrong vendor id=0x%x", vendor);
         return false;
     }
-	
-	return true;
+    
+    return true;
 }

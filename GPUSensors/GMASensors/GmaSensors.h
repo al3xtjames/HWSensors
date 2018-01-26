@@ -18,14 +18,14 @@ class GmaSensors : public GPUSensors
     OSDeclareDefaultStructors(GmaSensors) 
     
 private:
-	OSDictionary *		sensors;
-	volatile UInt8*     mmio_base;
-	IOMemoryMap *		mmio;
+    OSDictionary *      sensors;
+    volatile UInt8*     mmio_base;
+    IOMemoryMap *       mmio;
     UInt8               gpuIndex;
-	
-protected:	
+    
+protected:  
     virtual bool        willReadSensorValue(FakeSMCSensor *sensor, float* result);
-	virtual bool        managedStart(IOService *provider);
+    virtual bool        managedStart(IOService *provider);
     
 public:
     virtual void        stop(IOService* provider);

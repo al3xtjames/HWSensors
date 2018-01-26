@@ -242,17 +242,17 @@ UInt8 LPCSensors::tachometerSensorsLimit()
 
 float LPCSensors::readTemperature(UInt32 index)
 {
-	return 0;
+    return 0;
 }
 
 float LPCSensors::readVoltage(UInt32 index)
 {
-	return 0;
+    return 0;
 }
 
 float LPCSensors::readTachometer(UInt32 index)
 {
-	return 0;
+    return 0;
 }
 
 bool LPCSensors::isTachometerControlable(UInt32 index)
@@ -312,7 +312,7 @@ bool LPCSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
         return true;
     }
 
-	return false;
+    return false;
 }
 
 bool LPCSensors::didWriteSensorValue(FakeSMCSensor *sensor, float value)
@@ -467,24 +467,24 @@ IOReturn LPCSensors::woorkloopTimerEvent(void)
 
 bool LPCSensors::init(OSDictionary *properties)
 {
-	if (!super::init(properties))
-		return false;
+    if (!super::init(properties))
+        return false;
 
     address = 0;
     port = 0;
-   	model = 0;
+    model = 0;
 
     modelName = "unknown";
     vendorName = "unknown";
 
     gpuIndex = UINT8_MAX;
 
-	return true;
+    return true;
 }
 
 bool LPCSensors::start(IOService *provider)
 {
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
 
     OSNumber *number = OSDynamicCast(OSNumber, provider->getProperty(kSuperIOHWMAddress));
@@ -527,7 +527,7 @@ bool LPCSensors::start(IOService *provider)
 
     OSString *modelString = OSString::withCString(modelName);
 
-	if (OSDictionary *configuration = getConfigurationNode(modelString))
+    if (OSDictionary *configuration = getConfigurationNode(modelString))
     {
         addTemperatureSensors(configuration);
         addVoltageSensors(configuration);
@@ -555,21 +555,21 @@ bool LPCSensors::start(IOService *provider)
     }
 
     // two power states - off and on
-	static const IOPMPowerState powerStates[2] = {
+    static const IOPMPowerState powerStates[2] = {
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 1, IOPMDeviceUsable, IOPMPowerOn, IOPMPowerOn, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     // register interest in power state changes
-	PMinit();
-	provider->joinPMtree(this);
-	registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
+    PMinit();
+    provider->joinPMtree(this);
+    registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
 
     registerService();
 
     HWSensorsInfoLog("started");
 
-	return true;
+    return true;
 }
 
 void LPCSensors::stop(IOService *provider)

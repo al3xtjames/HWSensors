@@ -46,12 +46,12 @@
 #define kATASMARTAttributesCount     30
 
 typedef struct {
-    UInt8 			attributeId;
-    UInt16			flag;
-    UInt8 			current;
-    UInt8 			worst;
-    UInt8 			rawvalue[6];
-    UInt8 			reserv;
+    UInt8           attributeId;
+    UInt16          flag;
+    UInt8           current;
+    UInt8           worst;
+    UInt8           rawvalue[6];
+    UInt8           reserv;
 }  __attribute__ ((packed)) ATASMARTAttribute;
 
 // 0: Prefailure bit
@@ -95,8 +95,8 @@ typedef struct {
 #define ATTRIBUTE_FLAGS_OTHER(x) ((x) & 0xffc0)
 
 typedef struct {
-    UInt16 					revisonNumber;
-    ATASMARTAttribute		vendorAttributes [kATASMARTAttributesCount];
+    UInt16                  revisonNumber;
+    ATASMARTAttribute       vendorAttributes [kATASMARTAttributesCount];
 } __attribute__ ((packed)) ATASmartVendorSpecificData;
 
 typedef struct {

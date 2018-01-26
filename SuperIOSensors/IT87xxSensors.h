@@ -50,32 +50,32 @@
 #include <IOKit/IOService.h>
 
 // ITE
-const UInt8 ITE_VENDOR_ID								= 0x90;
+const UInt8 ITE_VENDOR_ID                               = 0x90;
 const UInt8 ITE_VERSION_REGISTER                        = 0x22;
 
 // ITE Environment Controller
-const UInt8 ITE_ADDRESS_REGISTER_OFFSET					= 0x05;
-const UInt8 ITE_DATA_REGISTER_OFFSET					= 0x06;
+const UInt8 ITE_ADDRESS_REGISTER_OFFSET                 = 0x05;
+const UInt8 ITE_DATA_REGISTER_OFFSET                    = 0x06;
 
 // ITE Environment Controller Registers    
-const UInt8 ITE_CONFIGURATION_REGISTER					= 0x00;
-const UInt8 ITE_TEMPERATURE_BASE_REG					= 0x29;
-const UInt8 ITE_VENDOR_ID_REGISTER						= 0x58;
-//const UInt8 ITE_FAN_TACHOMETER_16_BIT_ENABLE_REGISTER	= 0x0c;
+const UInt8 ITE_CONFIGURATION_REGISTER                  = 0x00;
+const UInt8 ITE_TEMPERATURE_BASE_REG                    = 0x29;
+const UInt8 ITE_VENDOR_ID_REGISTER                      = 0x58;
+//const UInt8 ITE_FAN_TACHOMETER_16_BIT_ENABLE_REGISTER = 0x0c;
 const UInt8 ITE_FAN_TACHOMETER_DIVISOR_REGISTER         = 0x0B;
-const UInt8 ITE_FAN_TACHOMETER_REG[5]					= { 0x0d, 0x0e, 0x0f, 0x80, 0x82 };
-const UInt8 ITE_FAN_TACHOMETER_EXT_REG[5]				= { 0x18, 0x19, 0x1a, 0x81, 0x83 };
-const UInt8 ITE_VOLTAGE_BASE_REG						= 0x20;
+const UInt8 ITE_FAN_TACHOMETER_REG[5]                   = { 0x0d, 0x0e, 0x0f, 0x80, 0x82 };
+const UInt8 ITE_FAN_TACHOMETER_EXT_REG[5]               = { 0x18, 0x19, 0x1a, 0x81, 0x83 };
+const UInt8 ITE_VOLTAGE_BASE_REG                        = 0x20;
 
-const UInt8 ITE_SMARTGUARDIAN_MAIN_CONTROL				= 0x13;
-//const UInt8 ITE_SMARTGUARDIAN_PWM_CONTROL[3]			= { 0x15, 0x16, 0x17};
+const UInt8 ITE_SMARTGUARDIAN_MAIN_CONTROL              = 0x13;
+//const UInt8 ITE_SMARTGUARDIAN_PWM_CONTROL[3]          = { 0x15, 0x16, 0x17};
 
-const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_STOP[5]		= { 0x60, 0x68, 0x70, 0x90, 0x98 };
-const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_START[5]		= { 0x61, 0x69, 0x71, 0x91, 0x99 };
-//const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_FULL_ON[5]	= { 0x62, 0x6a, 0x72, 0x92, 0x9a };
-const UInt8 ITE_SMARTGUARDIAN_START_PWM[5]				= { 0x63, 0x6b, 0x73, 0x93, 0x9b };
-const UInt8 ITE_SMARTGUARDIAN_CONTROL[5]				= { 0x64, 0x6c, 0x74, 0x94, 0x9c };
-//const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_FULL_OFF[5]	= { 0x65, 0x6d, 0x75, 0x95, 0x9d };
+const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_STOP[5]       = { 0x60, 0x68, 0x70, 0x90, 0x98 };
+const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_START[5]      = { 0x61, 0x69, 0x71, 0x91, 0x99 };
+//const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_FULL_ON[5]  = { 0x62, 0x6a, 0x72, 0x92, 0x9a };
+const UInt8 ITE_SMARTGUARDIAN_START_PWM[5]              = { 0x63, 0x6b, 0x73, 0x93, 0x9b };
+const UInt8 ITE_SMARTGUARDIAN_CONTROL[5]                = { 0x64, 0x6c, 0x74, 0x94, 0x9c };
+//const UInt8 ITE_SMARTGUARDIAN_TEMPERATURE_FULL_OFF[5] = { 0x65, 0x6d, 0x75, 0x95, 0x9d };
 
 #define ITE_SMARTGUARDIAN_PWM_CONTROL(nr)               (0x15 + (nr))
 #define ITE_SMARTGUARDIAN_PWM_DUTY(nr)                  (0x63 + (nr) * 8)
@@ -83,27 +83,27 @@ const UInt8 ITE_SMARTGUARDIAN_CONTROL[5]				= { 0x64, 0x6c, 0x74, 0x94, 0x9c };
 class IT87xxSensors : public LPCSensors
 {
     OSDeclareDefaultStructors(IT87xxSensors)
-	
+    
 private:
     bool                    fanControlEnabled[5];
     UInt8                   fanControl[5];
 
     UInt8                   features;
     
-	UInt8					readByte(UInt8 reg);
-	void					writeByte(UInt8 reg, UInt8 value);
+    UInt8                   readByte(UInt8 reg);
+    void                    writeByte(UInt8 reg, UInt8 value);
     
     virtual UInt8           temperatureSensorsLimit();
     virtual UInt8           voltageSensorsLimit();
     virtual UInt8           tachometerSensorsLimit();
-	
-	virtual float			readTemperature(UInt32 index);
-	virtual float			readVoltage(UInt32 index);
-	virtual float			readTachometer(UInt32 index);
     
-    virtual bool			isTachometerControlable(UInt32 index);
-    virtual UInt8			readTachometerControl(UInt32 index);
-    virtual void			writeTachometerControl(UInt32 index, UInt8 percent);
+    virtual float           readTemperature(UInt32 index);
+    virtual float           readVoltage(UInt32 index);
+    virtual float           readTachometer(UInt32 index);
+    
+    virtual bool            isTachometerControlable(UInt32 index);
+    virtual UInt8           readTachometerControl(UInt32 index);
+    virtual void            writeTachometerControl(UInt32 index, UInt8 percent);
     
     virtual bool            initialize();
     virtual void            hasPoweredOn();

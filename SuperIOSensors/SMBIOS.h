@@ -72,16 +72,16 @@ struct SMBStructHeader {
 
 struct SMBAnchor
 {
-	const SMBStructHeader *	header;
-	const UInt8 *			next;
-	const UInt8 *			end;
+    const SMBStructHeader * header;
+    const UInt8 *           next;
+    const UInt8 *           end;
 };
 
-#define SMB_ANCHOR_IS_VALID(x)	\
-	((x) && ((x)->header) && ((x)->next) && ((x)->end))
+#define SMB_ANCHOR_IS_VALID(x)  \
+    ((x) && ((x)->header) && ((x)->next) && ((x)->end))
 
-#define SMB_ANCHOR_RESET(x)		\
-	bzero(x, sizeof(struct SMBAnchor));
+#define SMB_ANCHOR_RESET(x)     \
+    bzero(x, sizeof(struct SMBAnchor));
 
 //
 // SMBIOS structure types.
@@ -90,7 +90,7 @@ struct SMBAnchor
 enum {
     kSMBTypeBIOSInformation             =  0,
     kSMBTypeSystemInformation           =  1,
-    kSMBTypeBaseBoard					=  2,
+    kSMBTypeBaseBoard                   =  2,
     kSMBTypeSystemEnclosure             =  3,
     kSMBTypeProcessorInformation        =  4,
     kSMBTypeMemoryModule                =  6,
@@ -143,37 +143,37 @@ struct SMBSystemInformation {
 
 struct SMBBaseBoard {
     SMB_STRUCT_HEADER               // Type 2
-    SMBString	manufacturer;
-    SMBString	product;
-    SMBString	version;
-    SMBString	serialNumber;
-    SMBString	assetTagNumber;
-    SMBByte		featureFlags;
-    SMBString	locationInChassis;
-    SMBWord		chassisHandle;
-    SMBByte		boardType;
-    SMBByte		numberOfContainedHandles;
-	// 0 - 255 contained handles go here but we do not include
-	// them in our structure. Be careful to use numberOfContainedHandles
-	// times sizeof(SMBWord) when computing the actual record size,
-	// if you need it.
+    SMBString   manufacturer;
+    SMBString   product;
+    SMBString   version;
+    SMBString   serialNumber;
+    SMBString   assetTagNumber;
+    SMBByte     featureFlags;
+    SMBString   locationInChassis;
+    SMBWord     chassisHandle;
+    SMBByte     boardType;
+    SMBByte     numberOfContainedHandles;
+    // 0 - 255 contained handles go here but we do not include
+    // them in our structure. Be careful to use numberOfContainedHandles
+    // times sizeof(SMBWord) when computing the actual record size,
+    // if you need it.
 };
 
 // Values for boardType in Type 2 records
 enum {
-    kSMBBaseBoardUnknown				= 0x01,
-    kSMBBaseBoardOther					= 0x02,
-    kSMBBaseBoardServerBlade			= 0x03,
-    kSMBBaseBoardConnectivitySwitch		= 0x04,
-    kSMBBaseBoardSystemMgmtModule		= 0x05,
-    kSMBBaseBoardProcessorModule		= 0x06,
-    kSMBBaseBoardIOModule				= 0x07,
-    kSMBBaseBoardMemoryModule			= 0x08,
-    kSMBBaseBoardDaughter				= 0x09,
-    kSMBBaseBoardMotherboard			= 0x0A,
-    kSMBBaseBoardProcessorMemoryModule	= 0x0B,
-    kSMBBaseBoardProcessorIOModule		= 0x0C,
-    kSMBBaseBoardInterconnect			= 0x0D,
+    kSMBBaseBoardUnknown                = 0x01,
+    kSMBBaseBoardOther                  = 0x02,
+    kSMBBaseBoardServerBlade            = 0x03,
+    kSMBBaseBoardConnectivitySwitch     = 0x04,
+    kSMBBaseBoardSystemMgmtModule       = 0x05,
+    kSMBBaseBoardProcessorModule        = 0x06,
+    kSMBBaseBoardIOModule               = 0x07,
+    kSMBBaseBoardMemoryModule           = 0x08,
+    kSMBBaseBoardDaughter               = 0x09,
+    kSMBBaseBoardMotherboard            = 0x0A,
+    kSMBBaseBoardProcessorMemoryModule  = 0x0B,
+    kSMBBaseBoardProcessorIOModule      = 0x0C,
+    kSMBBaseBoardInterconnect           = 0x0D,
 };
 
 
@@ -377,11 +377,11 @@ struct SMBFirmwareVolume {
 //
 
 struct SMBMemorySPD {
-	SMB_STRUCT_HEADER               // Type 130
-	SMBWord           Type17Handle;
-	SMBWord           Offset;
-	SMBWord           Size;
-	SMBWord           Data[];
+    SMB_STRUCT_HEADER               // Type 130
+    SMBWord           Type17Handle;
+    SMBWord           Offset;
+    SMBWord           Size;
+    SMBWord           Data[];
 };
 
 //static const char *
@@ -408,10 +408,10 @@ struct SMBMemorySPD {
 //    "DDR SDRAM",    /* 12h  DDR */
 //    "DDR2 SDRAM",   /* 13h  DDR2 */
 //    "DDR2 FB-DIMM", /* 14h  DDR2 FB-DIMM */
-//    "RAM",			/* 15h  unused */
-//    "RAM",			/* 16h  unused */
-//    "RAM",			/* 17h  unused */
-//    "DDR3",			/* 18h  DDR3, chosen in [5776134] */
+//    "RAM",            /* 15h  unused */
+//    "RAM",            /* 16h  unused */
+//    "RAM",            /* 17h  unused */
+//    "DDR3",           /* 18h  DDR3, chosen in [5776134] */
 //};
 
 //static const int
@@ -423,16 +423,16 @@ struct SMBMemorySPD {
 //
 
 struct SMBOemProcessorType {
-	SMB_STRUCT_HEADER
-	SMBWord    ProcessorType;
+    SMB_STRUCT_HEADER
+    SMBWord    ProcessorType;
 };
 
 //
 // OEM Processor Bus Speed (Apple Specific - Type 132)
 //
 struct SMBOemProcessorBusSpeed {
-	SMB_STRUCT_HEADER
-	SMBWord    ProcessorBusSpeed;   // MT/s unit
+    SMB_STRUCT_HEADER
+    SMBWord    ProcessorBusSpeed;   // MT/s unit
 };
 
 #pragma pack(pop) // reset to default struct packing

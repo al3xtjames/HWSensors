@@ -91,10 +91,10 @@ bool FakeSMCKeyStoreUserClient::initWithTask(task_t owningTask, void* securityID
         return false;
     }
 
-	if (!super::initWithTask(owningTask, securityID, type, properties)) {
+    if (!super::initWithTask(owningTask, securityID, type, properties)) {
         HWSensorsFatalLog("failed to initialize with task!");
         return false;
-	}
+    }
 
     keyStore = NULL;
     clientHasAdminPrivilegue = clientHasPrivilege(securityID, kIOClientPrivilegeAdministrator);
@@ -104,7 +104,7 @@ bool FakeSMCKeyStoreUserClient::initWithTask(task_t owningTask, void* securityID
 
 IOReturn FakeSMCKeyStoreUserClient::clientClose(void)
 {
-	if( !isInactive())
+    if( !isInactive())
         terminate();
 
     return kIOReturnSuccess;
@@ -112,14 +112,14 @@ IOReturn FakeSMCKeyStoreUserClient::clientClose(void)
 
 IOReturn FakeSMCKeyStoreUserClient::externalMethod(uint32_t selector, IOExternalMethodArguments* arguments, IOExternalMethodDispatch * dispatch, OSObject * target, void * reference )
 {
-	IOReturn result = kIOReturnError;
+    IOReturn result = kIOReturnError;
 
-	if (keyStore == NULL || isInactive()) {
-		return kIOReturnNotAttached;
-	}
-//	else if (!keyStore->isOpen(this)) {
-//		return kIOReturnNotOpen;
-//	}
+    if (keyStore == NULL || isInactive()) {
+        return kIOReturnNotAttached;
+    }
+//  else if (!keyStore->isOpen(this)) {
+//      return kIOReturnNotOpen;
+//  }
 
     SYNCLOCK;
 

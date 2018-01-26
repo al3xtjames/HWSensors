@@ -52,7 +52,7 @@ typedef struct _ATOM_COMMON_TABLE_HEADER
 /****************************************************************************/
 typedef struct _ATOM_MASTER_LIST_OF_DATA_TABLES
 {
-    USHORT        UtilityPipeLine;	        // Offest for the utility to get parser info,Don't change this position!
+    USHORT        UtilityPipeLine;          // Offest for the utility to get parser info,Don't change this position!
     USHORT        MultimediaCapabilityInfo; // Only used by MM Lib,latest version 1.1, not configuable from Bios, need to include the table to build Bios
     USHORT        MultimediaConfigInfo;     // Only used by MM Lib,latest version 2.1, not configuable from Bios, need to include the table to build Bios
     USHORT        StandardVESA_Timing;      // Only used by Bios
@@ -77,15 +77,15 @@ typedef struct _ATOM_MASTER_LIST_OF_DATA_TABLES
     USHORT        Object_Header;            // Shared by various SW components,latest version 1.1
     USHORT        IndirectIOAccess;         // Only used by Bios,this table position can't change at all!!
     USHORT        MC_InitParameter;         // Only used by command table
-    USHORT        ASIC_VDDC_Info;						// Will be obsolete from R600
-    USHORT        ASIC_InternalSS_Info;			// New tabel name from R600, used to be called "ASIC_MVDDC_Info"
-    USHORT        TV_VideoMode;							// Only used by command table
-    USHORT        VRAM_Info;								// Only used by command table, latest version 1.3
-    USHORT        MemoryTrainingInfo;				// Used for VBIOS and Diag utility for memory training purpose since R600. the new table rev start from 2.1
-    USHORT        IntegratedSystemInfo;			// Shared by various SW components
-    USHORT        ASIC_ProfilingInfo;				// New table name from R600, used to be called "ASIC_VDDCI_Info" for pre-R600
-    USHORT        VoltageObjectInfo;				// Shared by various SW components, latest version 1.1
-	USHORT				PowerSourceInfo;					// Shared by various SW components, latest versoin 1.1
+    USHORT        ASIC_VDDC_Info;                       // Will be obsolete from R600
+    USHORT        ASIC_InternalSS_Info;         // New tabel name from R600, used to be called "ASIC_MVDDC_Info"
+    USHORT        TV_VideoMode;                         // Only used by command table
+    USHORT        VRAM_Info;                                // Only used by command table, latest version 1.3
+    USHORT        MemoryTrainingInfo;               // Used for VBIOS and Diag utility for memory training purpose since R600. the new table rev start from 2.1
+    USHORT        IntegratedSystemInfo;         // Shared by various SW components
+    USHORT        ASIC_ProfilingInfo;               // New table name from R600, used to be called "ASIC_VDDCI_Info" for pre-R600
+    USHORT        VoltageObjectInfo;                // Shared by various SW components, latest version 1.1
+    USHORT              PowerSourceInfo;                    // Shared by various SW components, latest versoin 1.1
 }ATOM_MASTER_LIST_OF_DATA_TABLES;
 
 
@@ -96,7 +96,7 @@ typedef struct _ATOM_MASTER_LIST_OF_DATA_TABLES
 #define GET_COMMAND_TABLE_COMMANDSET_REVISION(TABLE_HEADER_OFFSET) (((static_cast<ATOM_COMMON_TABLE_HEADER*>(TABLE_HEADER_OFFSET))->ucTableFormatRevision )&0x3F)
 #define GET_COMMAND_TABLE_PARAMETER_REVISION(TABLE_HEADER_OFFSET)  (((static_cast<ATOM_COMMON_TABLE_HEADER*>(TABLE_HEADER_OFFSET))->ucTableContentRevision)&0x3F)
 #else // not __cplusplus
-#define	GetIndexIntoMasterTable(MasterOrData, FieldName) (((char*)(&((ATOM_MASTER_LIST_OF_##MasterOrData##_TABLES*)0)->FieldName)-(char*)0)/sizeof(USHORT))
+#define GetIndexIntoMasterTable(MasterOrData, FieldName) (((char*)(&((ATOM_MASTER_LIST_OF_##MasterOrData##_TABLES*)0)->FieldName)-(char*)0)/sizeof(USHORT))
 
 #define GET_COMMAND_TABLE_COMMANDSET_REVISION(TABLE_HEADER_OFFSET) ((((ATOM_COMMON_TABLE_HEADER*)TABLE_HEADER_OFFSET)->ucTableFormatRevision)&0x3F)
 #define GET_COMMAND_TABLE_PARAMETER_REVISION(TABLE_HEADER_OFFSET)  ((((ATOM_COMMON_TABLE_HEADER*)TABLE_HEADER_OFFSET)->ucTableContentRevision)&0x3F)
@@ -217,12 +217,12 @@ typedef struct  _ATOM_POWERMODE_INFO_V3
 #define ATOM_PP_OVERDRIVE_THERMALCONTROLLER_MUA6649   0x04
 #define ATOM_PP_OVERDRIVE_THERMALCONTROLLER_LM64      0x05
 #define ATOM_PP_OVERDRIVE_THERMALCONTROLLER_F75375    0x06
-#define ATOM_PP_OVERDRIVE_THERMALCONTROLLER_ASC7512   0x07	// Andigilog
+#define ATOM_PP_OVERDRIVE_THERMALCONTROLLER_ASC7512   0x07  // Andigilog
 
 
 typedef struct  _ATOM_POWERPLAY_INFO
 {
-    ATOM_COMMON_TABLE_HEADER	sHeader;
+    ATOM_COMMON_TABLE_HEADER    sHeader;
     UCHAR    ucOverdriveThermalController;
     UCHAR    ucOverdriveI2cLine;
     UCHAR    ucOverdriveIntBitmap;
@@ -234,7 +234,7 @@ typedef struct  _ATOM_POWERPLAY_INFO
 
 typedef struct  _ATOM_POWERPLAY_INFO_V2
 {
-    ATOM_COMMON_TABLE_HEADER	sHeader;
+    ATOM_COMMON_TABLE_HEADER    sHeader;
     UCHAR    ucOverdriveThermalController;
     UCHAR    ucOverdriveI2cLine;
     UCHAR    ucOverdriveIntBitmap;
@@ -246,7 +246,7 @@ typedef struct  _ATOM_POWERPLAY_INFO_V2
 
 typedef struct  _ATOM_POWERPLAY_INFO_V3
 {
-    ATOM_COMMON_TABLE_HEADER	sHeader;
+    ATOM_COMMON_TABLE_HEADER    sHeader;
     UCHAR    ucOverdriveThermalController;
     UCHAR    ucOverdriveI2cLine;
     UCHAR    ucOverdriveIntBitmap;

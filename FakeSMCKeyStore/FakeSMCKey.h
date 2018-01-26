@@ -46,13 +46,13 @@ class FakeSMCKey : public OSObject
 private:
     char *              key;
     char *              type;
-	UInt8               size;
-	void *              value;
-	FakeSMCKeyHandler * handler;
+    UInt8               size;
+    void *              value;
+    FakeSMCKeyHandler * handler;
 
     double              lastValueReadTime;
     //double              lastValueWroteTime;
-	
+    
 public:
     static UInt8        getIndexFromChar(char c);
     static bool         isValidIntegerType(const char *type);
@@ -62,30 +62,30 @@ public:
     static bool         decodeFloatValue(const char *type, const UInt8 size, const void *data, float *outValue);
     static bool         decodeIntValue(const char *type, const UInt8 size, const void *data, int *outValue);
     
-	static FakeSMCKey   *withValue(const char *aKey, const char *aType, const unsigned char aSize, const void *aValue);
-	static FakeSMCKey   *withHandler(const char *aKey, const char *aType, const unsigned char aSize, FakeSMCKeyHandler *aHandler);
+    static FakeSMCKey   *withValue(const char *aKey, const char *aType, const unsigned char aSize, const void *aValue);
+    static FakeSMCKey   *withHandler(const char *aKey, const char *aType, const unsigned char aSize, FakeSMCKeyHandler *aHandler);
     
     // Not for general use. Use withHandler or withValue instance creation method
-	virtual bool        init(const char * aKey, const char * aType, const unsigned char aSize, const void *aValue, FakeSMCKeyHandler *aHandler = 0);
-	
-	virtual void        free();
-	
+    virtual bool        init(const char * aKey, const char * aType, const unsigned char aSize, const void *aValue, FakeSMCKeyHandler *aHandler = 0);
+    
+    virtual void        free();
+    
     const char          *getName(); // this is used by logging functions
     
-	const char          *getKey();
-	const char          *getType();
-	const UInt8         getSize() const;
-	const void          *getValue();
+    const char          *getKey();
+    const char          *getType();
+    const UInt8         getSize() const;
+    const void          *getValue();
     FakeSMCKeyHandler   *getHandler();
-	
+    
     bool                setType(const char *aType);
     bool                setSize(UInt8 aSize);
-	bool                setValueFromBuffer(const void *aBuffer, UInt8 aSize);
-	bool                setHandler(FakeSMCKeyHandler *aHandler);
-	
-	bool                isEqualTo(const char *aKey);
-	bool                isEqualTo(FakeSMCKey *aKey);
-	bool                isEqualTo(const OSMetaClassBase *anObject);
+    bool                setValueFromBuffer(const void *aBuffer, UInt8 aSize);
+    bool                setHandler(FakeSMCKeyHandler *aHandler);
+    
+    bool                isEqualTo(const char *aKey);
+    bool                isEqualTo(FakeSMCKey *aKey);
+    bool                isEqualTo(const OSMetaClassBase *anObject);
 };
 
 

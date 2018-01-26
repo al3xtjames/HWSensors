@@ -16,9 +16,9 @@ OSDefineMetaClassAndStructors (FakeSMC, IOService)
 #pragma mark Overridden methods
 
 bool FakeSMC::init(OSDictionary *properties)
-{	
-	if (!super::init(properties))
-		return false;
+{   
+    if (!super::init(properties))
+        return false;
     
     IOLog("FakeSMC v%s Copyright %d netkas, slice, usr-sse2, kozlek, navi, THe KiNG, RehabMan. All rights reserved.\n", HWSENSORS_VERSION_STRING, HWSENSORS_LASTYEAR);
 
@@ -42,13 +42,13 @@ bool FakeSMC::init(OSDictionary *properties)
         
         OSSafeReleaseNULL(efi);
     }
-		
-	return true;
+        
+    return true;
 }
 
 bool FakeSMC::start(IOService *provider)
 {
-	if (!super::start(provider)) 
+    if (!super::start(provider)) 
         return false;
 
     if (OSDictionary *matching = serviceMatching(kFakeSMCKeyStoreService)) {
@@ -78,9 +78,9 @@ bool FakeSMC::start(IOService *provider)
     if (UInt32 count = keyStore->addKeysFromDictionary(OSDynamicCast(OSDictionary, configuration->getObject("Keys")))) {
         HWSensorsInfoLog("%d preconfigured key%s added", count, count == 1 ? "" : "s");
     }
-	else {
-		HWSensorsWarningLog("no preconfigured keys found");
-	}
+    else {
+        HWSensorsWarningLog("no preconfigured keys found");
+    }
 
     // Load wellknown type names
     HWSensorsDebugLog("loading types...");
@@ -163,8 +163,8 @@ bool FakeSMC::start(IOService *provider)
 
     this->setName("FSMC");
 
-  	registerService();
+    registerService();
 
-	return true;
+    return true;
 }
 

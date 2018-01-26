@@ -203,10 +203,10 @@ bool ACPIProbe::start(IOService * provider)
 {
     ACPISensorsDebugLog("starting...");
     
-	if (!super::start(provider))
+    if (!super::start(provider))
         return false;
     
-	if (!(acpiDevice = OSDynamicCast(IOACPIPlatformDevice, provider))) {
+    if (!(acpiDevice = OSDynamicCast(IOACPIPlatformDevice, provider))) {
         ACPISensorsFatalLog("ACPI device not ready");
         return false;
     }
@@ -317,26 +317,26 @@ bool ACPIProbe::start(IOService * provider)
     }
 
     // two power states - off and on
-	static const IOPMPowerState powerStates[2] = {
+    static const IOPMPowerState powerStates[2] = {
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 1, IOPMDeviceUsable, IOPMPowerOn, IOPMPowerOn, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     // register interest in power state changes
-	PMinit();
-	provider->joinPMtree(this);
-	registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
+    PMinit();
+    provider->joinPMtree(this);
+    registerPowerDriver(this, (IOPMPowerState *)powerStates, 2);
     
-	registerService();
+    registerService();
     
     ACPISensorsInfoLog("started");
     
-	return true;
+    return true;
 }
 
 IOReturn ACPIProbe::setPowerState(unsigned long powerState, IOService *device)
 {
-	switch (powerState) {
+    switch (powerState) {
         case 0: // Power Off
             timerEventSource->cancelTimeout();
             break;
@@ -351,7 +351,7 @@ IOReturn ACPIProbe::setPowerState(unsigned long powerState, IOService *device)
             break;
     }
 
-	return(IOPMAckImplied);
+    return(IOPMAckImplied);
 }
 
 void ACPIProbe::stop(IOService *provider)
