@@ -291,7 +291,7 @@ bool FakeSMCDevice::initAndStart(IOService *platform, IOService *provider)
     if (OSString *compatibleKey = OSDynamicCast(OSString, properties->getObject("smc-compatible")))
         FakeSMCSetProperty("compatible", (const char *)compatibleKey->getCStringNoCopy());
     else
-        FakeSMCSetProperty("compatible", "smc-napa");
+        FakeSMCSetProperty("compatible", "smc-huronriver");
 
     if (!this->setProperty("_STA", (unsigned long long)0x0000000b, 32)) {
         HWSensorsErrorLog("failed to set '_STA' property");
