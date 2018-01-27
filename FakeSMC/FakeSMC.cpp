@@ -16,43 +16,43 @@ OSDefineMetaClassAndStructors (FakeSMC, IOService)
 #pragma mark Overridden methods
 
 bool FakeSMC::init(OSDictionary *properties)
-{   
+{
     if (!super::init(properties))
         return false;
-    
+
     IOLog("FakeSMC v%s Copyright %d netkas, slice, usr-sse2, kozlek, navi, THe KiNG, RehabMan. All rights reserved.\n", HWSENSORS_VERSION_STRING, HWSENSORS_LASTYEAR);
 
     if (IORegistryEntry *efi = IORegistryEntry::fromPath("/efi", gIODTPlane)) {
         if (OSData *vendor = OSDynamicCast(OSData, efi->getProperty("firmware-vendor"))) { // firmware-vendor is in EFI node
             OSData *buffer = OSData::withCapacity(128);
             const unsigned char* data = static_cast<const unsigned char*>(vendor->getBytesNoCopy());
-            
+
             for (unsigned int index = 0; index < vendor->getLength(); index += 2) {
                 buffer->appendByte(data[index], 1);
             }
-            
+
             OSString *name = OSString::withCString(static_cast<const char *>(buffer->getBytesNoCopy()));
-            
+
             setProperty(kFakeSMCFirmwareVendor, name);
-            
+
             //OSSafeReleaseNULL(vendor);
             //OSSafeReleaseNULL(name);
             OSSafeReleaseNULL(buffer);
         }
-        
+
         OSSafeReleaseNULL(efi);
     }
-        
+
     return true;
 }
 
 bool FakeSMC::start(IOService *provider)
 {
-    if (!super::start(provider)) 
+    if (!super::start(provider))
         return false;
 
     if (OSDictionary *matching = serviceMatching(kFakeSMCKeyStoreService)) {
-        
+
         if (matching && !(keyStore = OSDynamicCast(FakeSMCKeyStore, waitForMatchingService(matching, kFakeSMCDefaultWaitTimeout)))) {
             HWSensorsInfoLog("still waiting for FakeSMCKeyStore...");
             return false;
@@ -116,7 +116,7 @@ bool FakeSMC::start(IOService *provider)
 
     if (OSDictionary *matching = serviceMatching("IOACPIPlatformDevice")) {
         if (OSIterator *iterator = getMatchingServices(matching)) {
-            
+
             OSString *name = OSString::withCString("APP0001");
 
             while (IOService *service = (IOService*)iterator->getNextObject()) {
@@ -129,10 +129,10 @@ bool FakeSMC::start(IOService *provider)
                     break;
                 }
             }
-            
+
             OSSafeReleaseNULL(iterator);
         }
-        
+
         OSSafeReleaseNULL(matching);
     }
 
@@ -154,7 +154,7 @@ bool FakeSMC::start(IOService *provider)
     int arg_value = 1;
 
     // Load keys from NVRAM
-    if (PE_parse_boot_argn("-fakesmc-use-nvram", &arg_value, sizeof(arg_value))) {
+    if (!PE_parse_boot_argn("-fakesmc-no-nvram", &arg_value, sizeof(arg_value))) {
         if (UInt32 count = keyStore->loadKeysFromNVRAM())
             HWSensorsInfoLog("%d key%s loaded from NVRAM", count, count == 1 ? "" : "s");
         else
@@ -167,4 +167,3 @@ bool FakeSMC::start(IOService *provider)
 
     return true;
 }
-
