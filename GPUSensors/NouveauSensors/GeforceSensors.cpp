@@ -1,5 +1,5 @@
 /*
- *  GeforceSensors.cpp
+ *  GeForceSensors.cpp
  *  HWSensors
  *
  *  Created by kozlek on 19/04/12.
@@ -30,7 +30,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "GeforceSensors.h"
+#include "GeForceSensors.h"
 
 #include "nouveau.h"
 #include "nvclock_i2c.h"
@@ -49,9 +49,9 @@ enum nouveau_fan_source {
 };
 
 #define super GPUSensors
-OSDefineMetaClassAndStructors(GeforceSensors, GPUSensors)
+OSDefineMetaClassAndStructors(GeForceSensors, GPUSensors)
 
-bool GeforceSensors::shadowBios()
+bool GeForceSensors::shadowBios()
 {
     struct nouveau_device *device = &card;
 
@@ -80,7 +80,7 @@ bool GeforceSensors::shadowBios()
     return true;
 }
 
-bool GeforceSensors::mapMemory(IOService *provider)
+bool GeForceSensors::mapMemory(IOService *provider)
 {
     struct nouveau_device *device = &card;
 
@@ -123,7 +123,7 @@ bool GeforceSensors::mapMemory(IOService *provider)
      }*/
 }
 
-bool GeforceSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
+bool GeForceSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
 {
     switch (sensor->getGroup()) {
         case kFakeSMCTemperatureSensor: {
@@ -177,7 +177,7 @@ bool GeforceSensors::willReadSensorValue(FakeSMCSensor *sensor, float *outValue)
     return true;
 }
 
-bool GeforceSensors::shouldWaitForAccelerator()
+bool GeForceSensors::shouldWaitForAccelerator()
 {
     int arg_value = 1;
 
@@ -188,7 +188,7 @@ bool GeforceSensors::shouldWaitForAccelerator()
     return card.card_type < NV_C0 ? true : false; // wait for accelerator to start and only after that prob i2c devices
 }
 
-bool GeforceSensors::probIsAcceleratorAlreadyLoaded()
+bool GeForceSensors::probIsAcceleratorAlreadyLoaded()
 {
     OSData * value = OSDynamicCast(OSData, pciDevice->getProperty("NVKernelLoaded")) ?: OSDynamicCast(OSData, pciDevice->getProperty("nvAcceleratorLoaded"));
 
@@ -222,7 +222,7 @@ bool GeforceSensors::probIsAcceleratorAlreadyLoaded()
     return false;
 }
 
-bool GeforceSensors::onStartUp(IOService *provider)
+bool GeForceSensors::onStartUp(IOService *provider)
 {
     HWSensorsDebugLog("Initializing...");
 
@@ -241,7 +241,7 @@ bool GeforceSensors::onStartUp(IOService *provider)
     return true;
 }
 
-bool GeforceSensors::managedStart(IOService *provider)
+bool GeForceSensors::managedStart(IOService *provider)
 {
     HWSensorsDebugLog("Managed start...");
 
@@ -360,7 +360,7 @@ bool GeforceSensors::managedStart(IOService *provider)
     return true;
 }
 
-void GeforceSensors::hasPoweredOn()
+void GeForceSensors::hasPoweredOn()
 {
     GPUSensors::hasPoweredOn();
     
@@ -369,7 +369,7 @@ void GeforceSensors::hasPoweredOn()
     }
 }
 
-void GeforceSensors::stop(IOService * provider)
+void GeForceSensors::stop(IOService * provider)
 {
     if (card.mmio)
         OSSafeReleaseNULL(card.mmio);

@@ -33,7 +33,7 @@ Bruce Allen for [smartmontools](http://www.smartmontools.org).
 Michael Robinson for Cocoa [Categories](https://github.com/faceleg/Cocoa-Categories).  
 Stephane Sudre for Packages (packagesbuild).  
 Andy Matuschak for Sparkle framework.  
-Nouveau Project for nouveau linux driver (GeforceSensors base).  
+Nouveau Project for nouveau linux driver (GeForceSensors base).  
 Advanced Micro Devices and all contributors for AMD Radeon linux driver (RadeonSensors base).  
 Joshua Nozzi for [JLNFadingScrollView](https://github.com/jnozzi/JLNFadingScrollView).  
 Rheinfabrik for [RFOverlayScrollView](https://github.com/rheinfabrik/RFOverlayScrollView).  

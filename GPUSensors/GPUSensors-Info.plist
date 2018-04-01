@@ -42,7 +42,7 @@
 			<key>IOMatchCategory</key>
 			<string>FakeSMCPlugin</string>
 			<key>IOClass</key>
-			<string>GeforceSensors</string>
+			<string>GeForceSensors</string>
 			<key>IOPCIClassMatch</key>
 			<string>0x03000000&amp;0xff000000</string>
 			<key>IOPCIMatch</key>

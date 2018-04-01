@@ -41,7 +41,7 @@
 		7E9F5454167C71D1006E907B /* RadeonSensors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F544F167C71D1006E907B /* RadeonSensors.cpp */; };
 		7E9F548B167C71DA006E907B /* adt7473.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F5457167C71D9006E907B /* adt7473.cpp */; };
 		7E9F548C167C71DA006E907B /* f75375.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F5458167C71D9006E907B /* f75375.cpp */; };
-		7E9F548E167C71DA006E907B /* GeforceSensors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F545A167C71D9006E907B /* GeforceSensors.cpp */; };
+		7E9F548E167C71DA006E907B /* GeForceSensors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F545A167C71D9006E907B /* GeForceSensors.cpp */; };
 		7E9F5496167C71DA006E907B /* lm99.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F5462167C71D9006E907B /* lm99.cpp */; };
 		7E9F5497167C71DA006E907B /* nouveau.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F5463167C71D9006E907B /* nouveau.cpp */; };
 		7E9F5499167C71DA006E907B /* nouveau_bios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F5465167C71D9006E907B /* nouveau_bios.cpp */; };
@@ -170,8 +170,8 @@
 		7E9F5457167C71D9006E907B /* adt7473.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = adt7473.cpp; sourceTree = "<group>"; };
 		7E9F5458167C71D9006E907B /* f75375.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = f75375.cpp; sourceTree = "<group>"; };
 		7E9F5459167C71D9006E907B /* f75375.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = f75375.h; sourceTree = "<group>"; };
-		7E9F545A167C71D9006E907B /* GeforceSensors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeforceSensors.cpp; sourceTree = "<group>"; };
-		7E9F545B167C71D9006E907B /* GeforceSensors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeforceSensors.h; sourceTree = "<group>"; };
+		7E9F545A167C71D9006E907B /* GeForceSensors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeForceSensors.cpp; sourceTree = "<group>"; };
+		7E9F545B167C71D9006E907B /* GeForceSensors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeForceSensors.h; sourceTree = "<group>"; };
 		7E9F5462167C71D9006E907B /* lm99.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lm99.cpp; sourceTree = "<group>"; };
 		7E9F5463167C71D9006E907B /* nouveau.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nouveau.cpp; sourceTree = "<group>"; };
 		7E9F5464167C71D9006E907B /* nouveau.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nouveau.h; sourceTree = "<group>"; };
@@ -627,15 +627,15 @@
 			path = RadeonSensors;
 			sourceTree = "<group>";
 		};
-		7E9F5456167C71D9006E907B /* GeforceSensors */ = {
+		7E9F5456167C71D9006E907B /* GeForceSensors */ = {
 			isa = PBXGroup;
 			children = (
 				7E0A2BA3167C731D0060C153 /* nouveau */,
 				7E9F54C4167C7213006E907B /* NVCLock */,
-				7E9F545B167C71D9006E907B /* GeforceSensors.h */,
-				7E9F545A167C71D9006E907B /* GeforceSensors.cpp */,
+				7E9F545B167C71D9006E907B /* GeForceSensors.h */,
+				7E9F545A167C71D9006E907B /* GeForceSensors.cpp */,
 			);
-			name = GeforceSensors;
+			name = GeForceSensors;
 			path = NouveauSensors;
 			sourceTree = "<group>";
 		};
@@ -671,7 +671,7 @@
 			children = (
 				7EBEB1D817B1753E00C114B5 /* GPUSensors */,
 				7E9F54BF167C71DF006E907B /* GMASensors */,
-				7E9F5456167C71D9006E907B /* GeforceSensors */,
+				7E9F5456167C71D9006E907B /* GeForceSensors */,
 				7E9F544B167C71D1006E907B /* RadeonSensors */,
 				7EADE20915E5602F00FD117C /* Supporting Files */,
 			);
@@ -958,7 +958,7 @@
 				7E9F548B167C71DA006E907B /* adt7473.cpp in Sources */,
 				7E9F548C167C71DA006E907B /* f75375.cpp in Sources */,
 				7E5643C218F0154A00E01864 /* gm100.cpp in Sources */,
-				7E9F548E167C71DA006E907B /* GeforceSensors.cpp in Sources */,
+				7E9F548E167C71DA006E907B /* GeForceSensors.cpp in Sources */,
 				7E9F5496167C71DA006E907B /* lm99.cpp in Sources */,
 				7E9F5497167C71DA006E907B /* nouveau.cpp in Sources */,
 				7E9F5499167C71DA006E907B /* nouveau_bios.cpp in Sources */,
